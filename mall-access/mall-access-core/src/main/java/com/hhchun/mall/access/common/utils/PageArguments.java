@@ -16,9 +16,7 @@ public class PageArguments {
      */
     private Long pageSize;
 
-    // 默认页
     public static final long DEFAULT_CURR_PAGE = 1L;
-    // 默认每页记录数
     public static final long DEFAULT_PAGE_SIZE = 10L;
 
     public <T> IPage<T> getPage() {
