@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DelegatingTargetAccessiblePermissionsProvider implements TargetRequiredPermissionsProvider {
-    public static final String BEAN_NAME = DelegatingTargetAccessiblePermissionsProvider.class.getName();
+    public static final String BEAN_NAME = "com.hhchun.mall.access.support.provider.DelegatingTargetAccessiblePermissionsProvider";
 
     private final Set<TargetRequiredPermissionsProvider> trs;
 

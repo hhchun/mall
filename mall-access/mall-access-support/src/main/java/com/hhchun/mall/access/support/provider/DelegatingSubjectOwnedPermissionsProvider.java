@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DelegatingSubjectOwnedPermissionsProvider implements SubjectOwnedPermissionsProvider {
-    public static final String BEAN_NAME = DelegatingSubjectOwnedPermissionsProvider.class.getName();
+    public static final String BEAN_NAME = "com.hhchun.mall.access.support.provider.DelegatingSubjectOwnedPermissionsProvider";
 
     private final Set<SubjectOwnedPermissionsProvider> sops;
 
