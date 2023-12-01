@@ -1,0 +1,31 @@
+package com.hhchun.mall.access.support.decision;
+
+import com.hhchun.mall.access.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+
+public class AffirmativeAccessDecision extends AbstractAccessDecision {
+
+    public AffirmativeAccessDecision(final SubjectOwnedPermissionsProvider sop,
+                                     final TargetRequiredPermissionsProvider trs) throws IllegalArgumentException {
+        super(sop, trs);
+    }
+
+    @Override
+    public boolean decide() {
+        final List<Permission> subjectOwnedPermissions = Optional.ofNullable(sop.provide()).orElse(Collections.emptyList());
+        final List<Permission> targetAccessiblePermissions = Optional.ofNullable(trs.provide()).orElse(Collections.emptyList());
+        for (Permission targetAccessiblePermission : targetAccessiblePermissions) {
+            if (subjectOwnedPermissions.contains(targetAccessiblePermission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
