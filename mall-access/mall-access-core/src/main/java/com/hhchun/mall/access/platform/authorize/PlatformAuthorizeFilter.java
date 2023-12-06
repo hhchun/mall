@@ -19,7 +19,7 @@ public class PlatformAuthorizeFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = ((HttpServletRequest) request).getHeader(TOKEN_HEADER_NAME);
-        Long platformUserId = TokenUtils.getPlatformUserId(token);
+        Long platformUserId = TokenUtils.getUserId(token);
         PlatformUserSubject subject = PlatformUserSubject.newSubject(platformUserId);
         PlatformUserSubjectHolder.setSubject(subject);
         chain.doFilter(request, response);

@@ -14,17 +14,17 @@ import org.springframework.util.StringUtils;
 public class TokenUtils {
     private static final String TOKEN_SECRET_KEY = "hhchun";
 
-    public static String getToken(Long platformUserId) {
-        Preconditions.checkArgument(platformUserId != null, "platformUserId == null!");
+    public static String getToken(Long userId) {
+        Preconditions.checkArgument(userId != null, "userId == null!");
         String iv = RandomUtil.randomString(8);
         DES des = new DES(Mode.CTS, Padding.ZeroPadding, TOKEN_SECRET_KEY.getBytes());
         des.setIv(iv.getBytes());
-        String ciphertext = des.encryptHex(String.valueOf(platformUserId));
+        String ciphertext = des.encryptHex(String.valueOf(userId));
         return ciphertext + "." + iv;
     }
 
     @Nullable
-    public static Long getPlatformUserId(@Nullable String token) throws CryptoException {
+    public static Long getUserId(@Nullable String token) throws CryptoException {
         if (!StringUtils.hasLength(token)) {
             return null;
         }

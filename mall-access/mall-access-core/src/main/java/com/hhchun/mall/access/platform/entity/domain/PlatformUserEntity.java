@@ -1,11 +1,17 @@
 package com.hhchun.mall.access.platform.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.hhchun.mall.access.common.constant.ValidationConstant;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * 平台用户
@@ -31,10 +37,12 @@ public class PlatformUserEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
+	@TableField(fill = FieldFill.INSERT)
 	private LocalDateTime createTime;
 	/**
 	 * 修改时间
 	 */
+	@TableField(fill = FieldFill.UPDATE)
 	private LocalDateTime updateTime;
 	/**
 	 * 用户名
@@ -44,5 +52,10 @@ public class PlatformUserEntity implements Serializable {
 	 * 密码
 	 */
 	private String password;
+	/**
+	 * 昵称
+	 */
+	private String nickname;
+
 
 }

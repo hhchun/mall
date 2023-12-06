@@ -1,5 +1,7 @@
 package com.hhchun.mall.access.platform.entity.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -15,8 +17,8 @@ import lombok.Data;
  * @date 2023-12-01 23:20:10
  */
 @Data
-@TableName("ac_role_permission")
-public class RolePermissionEntity implements Serializable {
+@TableName("ac_platform_role_permission")
+public class PlatformRolePermissionEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,10 +33,12 @@ public class RolePermissionEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
+	@TableField(fill = FieldFill.INSERT)
 	private LocalDateTime createTime;
 	/**
 	 * 修改时间
 	 */
+	@TableField(fill = FieldFill.UPDATE)
 	private LocalDateTime updateTime;
 	/**
 	 * 角色id

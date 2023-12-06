@@ -1,11 +1,14 @@
 package com.hhchun.mall.access.platform.controller;
 
+import com.hhchun.mall.access.common.constant.ValidationConstant.*;
+import com.hhchun.mall.access.common.utils.PageResult;
+import com.hhchun.mall.access.platform.entity.dto.PlatformRoleDto;
+import com.hhchun.mall.access.platform.entity.dto.search.PlatformRoleSearchDto;
+import com.hhchun.mall.access.platform.entity.vo.PlatformRoleVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import com.hhchun.mall.access.platform.entity.domain.PlatformRoleEntity;
 import com.hhchun.mall.access.platform.service.PlatformRoleService;
 import com.hhchun.mall.access.common.utils.R;
 
@@ -18,19 +21,36 @@ import com.hhchun.mall.access.common.utils.R;
  * @date 2023-12-01 23:20:10
  */
 @RestController
-@RequestMapping("/platformrole" )
+@RequestMapping("/access/platform/role")
 public class PlatformRoleController {
     @Autowired
     private PlatformRoleService platformRoleService;
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save" )
-    public R<?> save(@RequestBody PlatformRoleEntity platformRole) {
-            platformRoleService.save(platformRole);
+    @PostMapping("/save")
+    public R<?> savePlatformRole(@RequestBody @Validated(ADD.class) PlatformRoleDto roleDto) {
+        platformRoleService.savePlatformRole(roleDto);
 
         return R.success();
+    }
+
+    @PostMapping("/modify")
+    public R<?> modifyPlatformRole(@RequestBody @Validated(UPDATE.class) PlatformRoleDto roleDto) {
+        platformRoleService.modifyPlatformRole(roleDto);
+
+        return R.success();
+    }
+
+    @PostMapping("/remove/{roleId}")
+    public R<?> removePlatformRole(@PathVariable String roleId) {
+        platformRoleService.removePlatformRole(roleId);
+
+        return R.success();
+    }
+
+    @PostMapping("/list")
+    public R<PageResult<PlatformRoleVo>> getPlatformRoleList(@RequestBody PlatformRoleSearchDto search) {
+        PageResult<PlatformRoleVo> result = platformRoleService.getPlatformRoleList(search);
+        return R.success(result);
     }
 
 }

@@ -1,15 +1,10 @@
-package com.hhchun.mall.access.platform.entity.domain;
+package com.hhchun.mall.access.platform.entity.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.hhchun.mall.access.common.validation.ListValue;
-import lombok.Data;
 
 /**
  * 平台权限
@@ -19,28 +14,22 @@ import lombok.Data;
  * @date 2023-12-01 23:20:10
  */
 @Data
-@TableName("ac_platform_permission")
-public class PlatformPermissionEntity implements Serializable {
+public class PlatformPermissionVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * id
 	 */
-	@TableId
 	private Long id;
-	/**
-	 * 是否删除
-	 */
-	private Integer del;
 	/**
 	 * 创建时间
 	 */
-	@TableField(fill = FieldFill.INSERT)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createTime;
 	/**
 	 * 修改时间
 	 */
-	@TableField(fill = FieldFill.UPDATE)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime updateTime;
 	/**
 	 * 权限标识

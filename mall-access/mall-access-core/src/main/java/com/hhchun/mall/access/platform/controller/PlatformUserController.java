@@ -1,18 +1,20 @@
 package com.hhchun.mall.access.platform.controller;
 
-import java.util.Arrays;
-import java.util.Map;
 
+import com.hhchun.mall.access.common.constant.ValidationConstant.*;
+import com.hhchun.mall.access.common.utils.PageResult;
+import com.hhchun.mall.access.platform.entity.dto.LoginPlatformUserDto;
+import com.hhchun.mall.access.platform.entity.dto.PlatformUserDto;
+import com.hhchun.mall.access.platform.entity.dto.search.PlatformUserSearchDto;
+import com.hhchun.mall.access.platform.entity.vo.PlatformUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hhchun.mall.access.platform.entity.domain.PlatformUserEntity;
 import com.hhchun.mall.access.platform.service.PlatformUserService;
-import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.common.utils.R;
 
 
@@ -24,19 +26,36 @@ import com.hhchun.mall.access.common.utils.R;
  * @date 2023-12-01 23:20:10
  */
 @RestController
-@RequestMapping("/platformuser" )
+@RequestMapping("/access/platform/user")
 public class PlatformUserController {
     @Autowired
     private PlatformUserService platformUserService;
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save" )
-    public R<?> save(@RequestBody PlatformUserEntity platformUser) {
-            platformUserService.save(platformUser);
+    @PostMapping("/save")
+    public R<?> savePlatformUser(@RequestBody @Validated(ADD.class) PlatformUserDto userDto) {
+        platformUserService.savePlatformUser(userDto);
 
         return R.success();
     }
 
+    @PostMapping("/modify")
+    public R<?> modifyPlatformUser(@RequestBody @Validated(UPDATE.class) PlatformUserDto userDto) {
+        platformUserService.modifyPlatformUser(userDto);
+
+        return R.success();
+    }
+
+    @PostMapping("/list")
+    public R<PageResult<PlatformUserVo>> getPlatformUserList(@RequestBody PlatformUserSearchDto search) {
+        PageResult<PlatformUserVo> result = platformUserService.getPlatformUserList(search);
+
+        return R.success(result);
+    }
+
+    @PostMapping("/login")
+    public R<String> loginPlatformUser(@RequestBody @Validated LoginPlatformUserDto loginUserDto) {
+        String token = platformUserService.loginPlatformUser(loginUserDto);
+
+        return R.success(token);
+    }
 }

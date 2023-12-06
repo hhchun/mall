@@ -1,6 +1,6 @@
 package com.hhchun.mall.access.platform.dao;
 
-import com.hhchun.mall.access.platform.entity.domain.RolePermissionEntity;
+import com.hhchun.mall.access.platform.entity.domain.PlatformRolePermissionEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2023-12-01 23:20:10
  */
 @Mapper
-public interface RolePermissionDao extends BaseMapper<RolePermissionEntity> {
-	
+public interface PlatformRolePermissionDao extends BaseMapper<PlatformRolePermissionEntity> {
+
 }

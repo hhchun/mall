@@ -1,7 +1,12 @@
 package com.hhchun.mall.access.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRoleEntity;
+import com.hhchun.mall.access.platform.entity.dto.PlatformRoleDto;
+import com.hhchun.mall.access.platform.entity.dto.search.PlatformRoleSearchDto;
+import com.hhchun.mall.access.platform.entity.vo.PlatformRoleVo;
+import com.sun.istack.internal.NotNull;
 
 /**
  * 平台角色
@@ -12,5 +17,16 @@ import com.hhchun.mall.access.platform.entity.domain.PlatformRoleEntity;
  */
 public interface PlatformRoleService extends IService<PlatformRoleEntity> {
 
+    void savePlatformRole(PlatformRoleDto roleDto);
+
+    PlatformRoleEntity getPlatformRoleBySymbol(@NotNull String symbol);
+
+    void modifyPlatformRole(PlatformRoleDto roleDto);
+
+    PlatformRoleEntity getPlatformRoleById(@NotNull Long id);
+
+    void removePlatformRole(String roleId);
+
+    PageResult<PlatformRoleVo> getPlatformRoleList(PlatformRoleSearchDto search);
 }
 
