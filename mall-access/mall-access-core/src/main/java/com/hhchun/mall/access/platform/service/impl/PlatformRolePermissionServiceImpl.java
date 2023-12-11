@@ -1,8 +1,11 @@
 package com.hhchun.mall.access.platform.service.impl;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.dao.PlatformRolePermissionDao;
@@ -23,9 +26,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -41,10 +42,18 @@ public class PlatformRolePermissionServiceImpl extends ServiceImpl<PlatformRoleP
     @Transactional
     public void savePlatformRolePermissions(PlatformRolePermissionDto rolePermissionDto) {
         Long roleId = rolePermissionDto.getRoleId();
-        List<Long> permissionIds = rolePermissionDto.getPermissionIds();
-        Preconditions.checkArgument(!CollectionUtils.isEmpty(permissionIds), "没有选择权限");
+        Set<Long> permissionIds = rolePermissionDto.getPermissionIds();
         PlatformRoleEntity role = platformRoleService.getPlatformRoleById(roleId);
         Preconditions.checkCondition(role != null, "角色不存在");
+
+        Set<Long> existPermissionIds = list(new LambdaQueryWrapper<PlatformRolePermissionEntity>()
+                .select(PlatformRolePermissionEntity::getPermissionId)
+                .eq(PlatformRolePermissionEntity::getRoleId, roleId)
+                .in(PlatformRolePermissionEntity::getPermissionId, permissionIds))
+                .stream().map(PlatformRolePermissionEntity::getPermissionId)
+                .collect(Collectors.toSet());
+        // 过滤掉已存在的
+        permissionIds = Sets.difference(permissionIds, existPermissionIds);
 
         List<PlatformRolePermissionEntity> rolePermissions = permissionIds.stream().map(permissionId -> {
             PlatformRolePermissionEntity rolePermission = new PlatformRolePermissionEntity();
@@ -68,7 +77,9 @@ public class PlatformRolePermissionServiceImpl extends ServiceImpl<PlatformRoleP
         wrapper.select(PlatformRolePermissionEntity::getId, PlatformRolePermissionEntity::getPermissionId);
         wrapper.eq(PlatformRolePermissionEntity::getRoleId, roleId);
         List<PlatformRolePermissionEntity> rolePermissions = list(wrapper);
-        List<Long> permissionIds = rolePermissions.stream().map(PlatformRolePermissionEntity::getPermissionId).collect(Collectors.toList());
+        List<Long> permissionIds = rolePermissions.stream()
+                .map(PlatformRolePermissionEntity::getPermissionId)
+                .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(permissionIds)) {
             return PageResult.empty();
         }
@@ -95,7 +106,7 @@ public class PlatformRolePermissionServiceImpl extends ServiceImpl<PlatformRoleP
         List<Long> permissionIds = rolePermissions.stream().map(PlatformRolePermissionEntity::getPermissionId).collect(Collectors.toList());
 
         IPage<PlatformPermissionEntity> page = platformPermissionService.page(search.getPage(), new LambdaQueryWrapper<PlatformPermissionEntity>()
-                .notIn(!CollectionUtils.isEmpty(permissionIds),PlatformPermissionEntity::getId, permissionIds));
+                .notIn(!CollectionUtils.isEmpty(permissionIds), PlatformPermissionEntity::getId, permissionIds));
         List<PlatformPermissionEntity> permissions = page.getRecords();
         List<PlatformPermissionVo> permissionVos = permissions.stream().map(permission -> {
             PlatformPermissionVo permissionVo = new PlatformPermissionVo();

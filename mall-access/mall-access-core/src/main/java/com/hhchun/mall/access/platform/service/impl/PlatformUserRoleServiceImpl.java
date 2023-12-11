@@ -2,6 +2,8 @@ package com.hhchun.mall.access.platform.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.dao.PlatformUserRoleDao;
@@ -21,9 +23,7 @@ import com.hhchun.mall.access.platform.service.PlatformUserRoleService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -39,8 +39,17 @@ public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao
     @Override
     public void savePlatformUserRoles(PlatformUserRoleDto userRoleDto) {
         Long userId = userRoleDto.getUserId();
-        List<Long> roleIds = userRoleDto.getRoleIds();
-        Preconditions.checkArgument(!CollectionUtils.isEmpty(roleIds), "没有选择角色");
+        Set<Long> roleIds = userRoleDto.getRoleIds();
+
+        Set<Long> existRoleIds = list(new LambdaQueryWrapper<PlatformUserRoleEntity>()
+                .select(PlatformUserRoleEntity::getRoleId)
+                .eq(PlatformUserRoleEntity::getUserId, userId)
+                .in(PlatformUserRoleEntity::getRoleId, roleIds))
+                .stream().map(PlatformUserRoleEntity::getRoleId)
+                .collect(Collectors.toSet());
+        // 过滤掉已存在的
+        roleIds = Sets.difference(roleIds, existRoleIds);
+
         PlatformUserEntity platformUser = platformUserService.getPlatformUserById(userId);
         Preconditions.checkCondition(platformUser != null, "用户不存在");
         List<PlatformUserRoleEntity> userRoles = roleIds.stream().map(roleId -> {

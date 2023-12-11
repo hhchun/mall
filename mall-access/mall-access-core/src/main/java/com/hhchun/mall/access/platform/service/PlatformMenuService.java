@@ -21,11 +21,15 @@ public interface PlatformMenuService extends IService<PlatformMenuEntity> {
     List<PlatformMenuVo> getPlatformMenuTree(@Nullable Long pid);
 
     void savePlatformMenu(PlatformMenuDto menuDto);
+
     @Nullable
     PlatformMenuEntity getPlatformMenuBySymbol(String symbol);
 
     void modifyPlatformMenu(PlatformMenuDto menuDto);
 
     void removePlatformMenu(Long menuId);
+
+    @Nullable
+    PlatformMenuEntity getPlatformMenuById(Long id);
 }
 

@@ -5,9 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.hhchun.mall.access.common.constant.ValidationConstant.*;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 平台角色关联权限
@@ -28,6 +29,7 @@ public class PlatformRolePermissionDto implements Serializable {
     /**
      * 权限id
      */
-    private List<Long> permissionIds;
+    @NotEmpty(groups = ADD.class, message = "没有选择权限")
+    private Set<Long> permissionIds;
 
 }

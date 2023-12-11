@@ -1,7 +1,11 @@
 package com.hhchun.mall.access.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.entity.domain.PlatformMenuPermissionEntity;
+import com.hhchun.mall.access.platform.entity.dto.PlatformMenuPermissionDto;
+import com.hhchun.mall.access.platform.entity.dto.search.PlatformMenuPermissionSearchDto;
+import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
 
 
 /**
@@ -13,5 +17,12 @@ import com.hhchun.mall.access.platform.entity.domain.PlatformMenuPermissionEntit
  */
 public interface PlatformMenuPermissionService extends IService<PlatformMenuPermissionEntity> {
 
+    void saveMenuPermissions(PlatformMenuPermissionDto menuPermissionDto);
+
+    void removeMenuPermission(Long menuPermissionId);
+
+    PageResult<PlatformPermissionVo> getPlatformBoundPermissionList(PlatformMenuPermissionSearchDto search);
+
+    PageResult<PlatformPermissionVo> getPlatformUnboundPermissionList(PlatformMenuPermissionSearchDto search);
 }
 

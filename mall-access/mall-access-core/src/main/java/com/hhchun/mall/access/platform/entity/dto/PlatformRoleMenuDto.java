@@ -6,32 +6,28 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
- * 平台用户关联角色
+ * 平台角色关联菜单
  *
  * @author hhchun
  * @email 12487489@qq.com
- * @date 2023-12-01 23:20:10
+ * @date 2023-12-09 03:22:30
  */
 @Data
-public class PlatformUserRoleDto implements Serializable {
+public class PlatformRoleMenuDto implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 平台用户id
-     */
-    @NotNull(groups = ADD.class, message = "平台用户id不能为空")
-    private Long userId;
     /**
      * 角色id
      */
-    @NotEmpty(groups = ADD.class, message = "没有选择角色")
-    private Set<Long> roleIds;
+    @NotNull(groups = ADD.class, message = "角色id不能为空")
+    private Long roleId;
+    /**
+     * 菜单id
+     */
+    @NotEmpty(groups = ADD.class, message = "没有选择菜单")
+    private Set<Long> menuIds;
 
 }
