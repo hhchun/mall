@@ -1,10 +1,7 @@
 package com.hhchun.mall.access.platform.service.impl;
 
-
-import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.common.utils.PageResult;
@@ -12,7 +9,6 @@ import com.hhchun.mall.access.platform.dao.PlatformRolePermissionDao;
 import com.hhchun.mall.access.platform.entity.domain.PlatformPermissionEntity;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRoleEntity;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRolePermissionEntity;
-import com.hhchun.mall.access.platform.entity.dto.PlatformPermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.PlatformRolePermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
