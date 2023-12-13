@@ -8,8 +8,19 @@ public class Permission {
      */
     private final String symbol;
 
+    /**
+     * 权限主体
+     */
+    private final String subject;
+
     public Permission(String symbol) {
         this.symbol = symbol;
+        this.subject = null;
+    }
+
+    public Permission(String symbol, String subject) {
+        this.symbol = symbol;
+        this.subject = subject;
     }
 
     @Override
@@ -23,5 +34,13 @@ public class Permission {
     @Override
     public int hashCode() {
         return Objects.hash(symbol);
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }

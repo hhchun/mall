@@ -3,6 +3,7 @@ package com.hhchun.mall.access.platform.config;
 import com.hhchun.mall.access.platform.authorize.PlatformAuthorizeFilter;
 import com.hhchun.mall.access.platform.provider.PlatformSubjectOwnedPermissionsProvider;
 import com.hhchun.mall.access.platform.provider.PlatformTargetRequiredPermissionsProvider;
+import com.hhchun.mall.access.platform.provider.cache.PlatformAccessPermissionCache;
 import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
 import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -13,14 +14,15 @@ import javax.servlet.Filter;
 
 @Configuration
 public class MallAccessPlatformConfiguration {
+
     @Bean
-    public SubjectOwnedPermissionsProvider platformSubjectOwnedPermissionsProvider() {
-        return new PlatformSubjectOwnedPermissionsProvider();
+    public SubjectOwnedPermissionsProvider platformSubjectOwnedPermissionsProvider(PlatformAccessPermissionCache cache) {
+        return new PlatformSubjectOwnedPermissionsProvider(cache);
     }
 
     @Bean
-    public TargetRequiredPermissionsProvider platformTargetAccessiblePermissionsProvider() {
-        return new PlatformTargetRequiredPermissionsProvider();
+    public TargetRequiredPermissionsProvider platformTargetAccessiblePermissionsProvider(PlatformAccessPermissionCache cache) {
+        return new PlatformTargetRequiredPermissionsProvider(cache);
     }
 
     @Bean
