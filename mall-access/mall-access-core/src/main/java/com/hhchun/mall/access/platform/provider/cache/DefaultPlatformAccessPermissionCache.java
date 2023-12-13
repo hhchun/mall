@@ -7,7 +7,6 @@ import com.hhchun.mall.access.platform.entity.domain.*;
 import com.hhchun.mall.access.platform.service.*;
 import com.hhchun.mall.access.support.provider.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * 没有使用缓存
  */
-@Component
+//@Component
 public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermissionCache {
 
     @Autowired
