@@ -87,7 +87,6 @@ public class PlatformRoleMenuServiceImpl extends ServiceImpl<PlatformRoleMenuDao
             BeanUtils.copyProperties(menu, menuVo);
             return menuVo;
         }).collect(Collectors.toList());
-
         return PageResult.convert(page, menuVos);
     }
 
