@@ -1,5 +1,6 @@
 package com.hhchun.mall.access.support.provider;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class Permission {
@@ -7,20 +8,19 @@ public class Permission {
      * 权限标识
      */
     private final String symbol;
-
     /**
-     * 权限主体
+     * 额外信息
      */
-    private final String subject;
+    private final Extra extra;
 
     public Permission(String symbol) {
         this.symbol = symbol;
-        this.subject = null;
+        this.extra = null;
     }
 
-    public Permission(String symbol, String subject) {
+    public Permission(String symbol, Extra extra) {
         this.symbol = symbol;
-        this.subject = subject;
+        this.extra = extra;
     }
 
     @Override
@@ -40,7 +40,38 @@ public class Permission {
         return symbol;
     }
 
-    public String getSubject() {
-        return subject;
+    @Nullable
+    public Extra getExtra() {
+        return extra;
+    }
+
+    public static class Extra {
+        /**
+         * 权限id
+         */
+        private final Long permissionId;
+        /**
+         * 权限主体
+         */
+        private final String subject;
+
+        public Extra(String subject) {
+            this.subject = subject;
+            this.permissionId = null;
+        }
+
+        public Extra(Long permissionId, String subject) {
+            this.permissionId = permissionId;
+            this.subject = subject;
+        }
+
+        @Nullable
+        public Long getPermissionId() {
+            return permissionId;
+        }
+
+        public String getSubject() {
+            return subject;
+        }
     }
 }
