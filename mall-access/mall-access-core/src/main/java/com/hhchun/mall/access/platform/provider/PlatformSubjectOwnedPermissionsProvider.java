@@ -22,8 +22,8 @@ public class PlatformSubjectOwnedPermissionsProvider implements SubjectOwnedPerm
     @Override
     public List<Permission> provide() {
         Long platformUserId = PlatformUserSubjectHolder.getPlatformUserId();
-        List<Permission> overt = cache.getOvertPermissions();
-        List<Permission> owned = cache.getOwnedPermissions(platformUserId);
+        List<Permission> overt = cache.getOvertPermission();
+        List<Permission> owned = cache.getOwnedPermission(platformUserId);
         return Stream.concat(overt.stream(), owned.stream()).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.hhchun.mall.access.platform.provider;
 
+import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.platform.provider.cache.PlatformAccessPermissionCache;
 import com.hhchun.mall.access.support.provider.Permission;
 import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
@@ -31,7 +32,9 @@ public class PlatformTargetRequiredPermissionsProvider implements TargetRequired
         AntPathMatcher matcher = new AntPathMatcher();
         List<Permission> all = cache.getAllPermission();
         return all.stream().filter(p -> {
-            String subject = p.getSubject();
+            Permission.Extra extra = p.getExtra();
+            Preconditions.checkArgument(extra != null, "extra == null!");
+            String subject = extra.getSubject();
             return StringUtils.hasLength(subject) && matcher.match(subject, target);
         }).collect(Collectors.toList());
     }
