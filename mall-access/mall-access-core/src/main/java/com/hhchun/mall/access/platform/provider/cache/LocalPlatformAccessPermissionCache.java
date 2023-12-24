@@ -2,23 +2,15 @@ package com.hhchun.mall.access.platform.provider.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.exception.UnknownErrorException;
 import com.hhchun.mall.access.support.provider.Permission;
-import com.hhchun.mall.common.utils.cursor.CollectionQueryCursor;
-import com.hhchun.mall.common.utils.cursor.QueryCursor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 @Component

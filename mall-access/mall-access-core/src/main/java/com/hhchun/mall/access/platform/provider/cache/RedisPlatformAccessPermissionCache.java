@@ -2,23 +2,16 @@ package com.hhchun.mall.access.platform.provider.cache;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.exception.UnknownErrorException;
 import com.hhchun.mall.access.support.provider.Permission;
-import com.hhchun.mall.common.utils.cursor.CollectionQueryCursor;
-import com.hhchun.mall.common.utils.cursor.QueryCursor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Spliterator;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

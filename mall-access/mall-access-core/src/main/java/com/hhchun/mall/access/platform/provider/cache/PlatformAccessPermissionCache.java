@@ -1,8 +1,6 @@
 package com.hhchun.mall.access.platform.provider.cache;
 
 import com.hhchun.mall.access.support.provider.Permission;
-import com.hhchun.mall.common.utils.cursor.QueryCursor;
-
 import java.util.List;
 
 /**
