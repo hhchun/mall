@@ -1,6 +1,7 @@
 package com.hhchun.mall.access.platform.provider.cache;
 
 import com.hhchun.mall.access.support.provider.Permission;
+import com.hhchun.mall.common.utils.cursor.QueryCursor;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface PlatformAccessPermissionCache {
 
     List<Permission> getAllPermission();
 
-    List<Permission> getOwnedPermissions(Long platformUserId);
+    List<Permission> getOwnedPermission(Long platformUserId);
 
-    List<Permission> getOvertPermissions();
+    List<Permission> getOvertPermission();
 }

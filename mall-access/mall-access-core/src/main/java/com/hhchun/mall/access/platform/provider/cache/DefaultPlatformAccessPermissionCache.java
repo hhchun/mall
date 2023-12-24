@@ -2,13 +2,13 @@ package com.hhchun.mall.access.platform.provider.cache;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.google.common.collect.Lists;
 import com.hhchun.mall.access.platform.entity.domain.*;
 import com.hhchun.mall.access.platform.service.*;
 import com.hhchun.mall.access.support.provider.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,14 +34,13 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
     public List<Permission> getAllPermission() {
         LambdaQueryWrapper<PlatformPermissionEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.select(PlatformPermissionEntity::getSymbol, PlatformPermissionEntity::getSubject);
-        List<PlatformPermissionEntity> pps = platformPermissionService.list(wrapper);
-        return pps.stream()
-                .map(pp -> new Permission(pp.getSymbol(), pp.getSubject()))
+        return platformPermissionService.list(wrapper).stream()
+                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Permission> getOwnedPermissions(Long platformUserId) {
+    public List<Permission> getOwnedPermission(Long platformUserId) {
         LambdaQueryWrapper<PlatformUserRoleEntity> userRoleWrapper = new LambdaQueryWrapper<PlatformUserRoleEntity>()
                 .select(PlatformUserRoleEntity::getRoleId)
                 .eq(PlatformUserRoleEntity::getUserId, platformUserId);
@@ -50,7 +49,7 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
                 .map(PlatformUserRoleEntity::getRoleId)
                 .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(roleIds)) {
-            return Lists.newArrayList();
+            return Collections.emptyList();
         }
         // 1.角色关联权限
         LambdaQueryWrapper<PlatformRolePermissionEntity> rolePermissionWrapper = new LambdaQueryWrapper<PlatformRolePermissionEntity>()
@@ -79,23 +78,24 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
             permissionIds.addAll(menuToPermissionIds);
         }
         if (CollectionUtils.isEmpty(permissionIds)) {
-            return Lists.newArrayList();
+            return Collections.emptyList();
         }
 
         LambdaQueryWrapper<PlatformPermissionEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.select(PlatformPermissionEntity::getSymbol);
         wrapper.in(PlatformPermissionEntity::getId, permissionIds);
-        List<PlatformPermissionEntity> pps = platformPermissionService.list(wrapper);
-
-        return pps.stream().map(pp -> new Permission(pp.getSymbol())).collect(Collectors.toList());
+        return platformPermissionService.list(wrapper).stream()
+                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Permission> getOvertPermissions() {
+    public List<Permission> getOvertPermission() {
         LambdaQueryWrapper<PlatformPermissionEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.select(PlatformPermissionEntity::getSymbol);
         wrapper.eq(PlatformPermissionEntity::getOvert, true);
-        List<PlatformPermissionEntity> pps = platformPermissionService.list(wrapper);
-        return pps.stream().map(pp -> new Permission(pp.getSymbol())).collect(Collectors.toList());
+        return platformPermissionService.list(wrapper).stream()
+                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
+                .collect(Collectors.toList());
     }
 }
