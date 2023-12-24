@@ -6,6 +6,7 @@ import com.hhchun.mall.access.platform.provider.PlatformTargetRequiredPermission
 import com.hhchun.mall.access.platform.provider.cache.PlatformAccessPermissionCache;
 import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
 import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.Filter;
 
 @Configuration
+@MapperScan("com.hhchun.mall.access.platform.dao")
 public class MallAccessPlatformConfiguration {
 
     @Bean
