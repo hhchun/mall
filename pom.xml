@@ -11,6 +11,7 @@
     <modules>
         <module>mall-access</module>
         <module>mall-bootstrap</module>
+        <module>mall-common</module>
     </modules>
 
     <dependencyManagement>
@@ -51,12 +52,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>32.0.1-jre</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>3.22.1</version>
             </dependency>
 
             <dependency>
