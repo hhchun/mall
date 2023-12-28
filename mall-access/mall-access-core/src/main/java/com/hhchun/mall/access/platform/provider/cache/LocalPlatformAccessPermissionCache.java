@@ -66,4 +66,24 @@ public class LocalPlatformAccessPermissionCache extends RedisPlatformAccessPermi
             throw new UnknownErrorException(e);
         }
     }
+
+
+    @Override
+    public void invalidateAllPermission() {
+        super.invalidateAllPermission();
+        CACHE.invalidate(LOCAL_ALL_PERMISSION_KEY);
+    }
+
+    @Override
+    public void invalidateOvertPermission() {
+        super.invalidateOvertPermission();
+        CACHE.invalidate(LOCAL_OVERT_PERMISSION_KEY);
+    }
+
+    @Override
+    public void invalidateOwnedPermission(Long platformUserId) {
+        super.invalidateOwnedPermission(platformUserId);
+        String key = String.valueOf(platformUserId);
+        CACHE.invalidate(key);
+    }
 }

@@ -25,7 +25,7 @@ public interface PlatformRoleService extends IService<PlatformRoleEntity> {
 
     PlatformRoleEntity getPlatformRoleById(@NotNull Long id);
 
-    void removePlatformRole(String roleId);
+    void removePlatformRole(Long roleId);
 
     PageResult<PlatformRoleVo> getPlatformRoleList(PlatformRoleSearchDto search);
 }

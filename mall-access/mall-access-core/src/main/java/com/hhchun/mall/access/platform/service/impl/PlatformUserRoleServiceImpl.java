@@ -11,10 +11,13 @@ import com.hhchun.mall.access.platform.entity.domain.PlatformUserEntity;
 import com.hhchun.mall.access.platform.entity.dto.PlatformUserRoleDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformUserRoleSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformRoleVo;
+import com.hhchun.mall.access.platform.event.Action;
+import com.hhchun.mall.access.platform.event.PlatformUserRoleEvent;
 import com.hhchun.mall.access.platform.service.PlatformRoleService;
 import com.hhchun.mall.access.platform.service.PlatformUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hhchun.mall.access.platform.entity.domain.PlatformUserRoleEntity;
@@ -33,6 +36,9 @@ public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao
     private PlatformUserService platformUserService;
     @Autowired
     private PlatformRoleService platformRoleService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Transactional
     @Override
@@ -58,11 +64,16 @@ public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao
             return userRole;
         }).collect(Collectors.toList());
         saveBatch(userRoles);
+
+        publisher.publishEvent(new PlatformUserRoleEvent(this, Action.SAVE, userId));
     }
 
     @Override
     public void removePlatformUserRole(Long userRoleId) {
+        PlatformUserRoleEntity userRole = getById(userRoleId);
         removeById(userRoleId);
+
+        publisher.publishEvent(new PlatformUserRoleEvent(this, Action.REMOVE, userRole.getUserId()));
     }
 
     @Override
@@ -102,5 +113,15 @@ public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao
             return roleVo;
         }).collect(Collectors.toList());
         return PageResult.convert(page, roleVos);
+    }
+
+    @Override
+    public List<Long> getPlatformUserIdsByRoleIds(List<Long> roleIds) {
+        LambdaQueryWrapper<PlatformUserRoleEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(PlatformUserRoleEntity::getUserId);
+        wrapper.in(PlatformUserRoleEntity::getRoleId, roleIds);
+        return list(wrapper).stream()
+                .map(PlatformUserRoleEntity::getUserId)
+                .collect(Collectors.toList());
     }
 }

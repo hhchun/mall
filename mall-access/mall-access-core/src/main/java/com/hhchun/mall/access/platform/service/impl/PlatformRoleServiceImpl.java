@@ -9,9 +9,14 @@ import com.hhchun.mall.access.platform.dao.PlatformRoleDao;
 import com.hhchun.mall.access.platform.entity.dto.PlatformRoleDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRoleSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformRoleVo;
+import com.hhchun.mall.access.platform.event.Action;
+import com.hhchun.mall.access.platform.event.PlatformRoleEvent;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRoleEntity;
 import com.hhchun.mall.access.platform.service.PlatformRoleService;
@@ -24,6 +29,9 @@ import java.util.stream.Collectors;
 
 @Service("platformRoleService")
 public class PlatformRoleServiceImpl extends ServiceImpl<PlatformRoleDao, PlatformRoleEntity> implements PlatformRoleService {
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     public void savePlatformRole(PlatformRoleDto roleDto) {
@@ -43,19 +51,21 @@ public class PlatformRoleServiceImpl extends ServiceImpl<PlatformRoleDao, Platfo
 
     @Override
     public void modifyPlatformRole(PlatformRoleDto roleDto) {
-        Long platformRoleId = roleDto.getId();
+        Long roleId = roleDto.getId();
         String symbol = roleDto.getSymbol();
-        PlatformRoleEntity role = getPlatformRoleById(platformRoleId);
+        PlatformRoleEntity role = getPlatformRoleById(roleId);
         Preconditions.checkCondition(role != null, "角色不存在");
         if (StringUtils.hasLength(symbol)) {
             PlatformRoleEntity symbolRole = getPlatformRoleBySymbol(symbol);
             Preconditions.checkCondition(symbolRole == null
-                            || Objects.equals(symbolRole.getId(), platformRoleId),
+                            || Objects.equals(symbolRole.getId(), roleId),
                     "角色标识已存在");
         }
         PlatformRoleEntity modifyRole = new PlatformRoleEntity();
         BeanUtils.copyProperties(roleDto, modifyRole);
         updateById(modifyRole);
+
+        publisher.publishEvent(new PlatformRoleEvent(this, Action.MODIFY, roleId));
     }
 
     @Override
@@ -65,8 +75,10 @@ public class PlatformRoleServiceImpl extends ServiceImpl<PlatformRoleDao, Platfo
     }
 
     @Override
-    public void removePlatformRole(String roleId) {
+    public void removePlatformRole(Long roleId) {
         removeById(roleId);
+
+        publisher.publishEvent(new PlatformRoleEvent(this, Action.MODIFY, roleId));
     }
 
     @Override

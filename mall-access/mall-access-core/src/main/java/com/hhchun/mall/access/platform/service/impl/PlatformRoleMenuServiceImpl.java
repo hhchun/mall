@@ -34,8 +34,6 @@ public class PlatformRoleMenuServiceImpl extends ServiceImpl<PlatformRoleMenuDao
     @Autowired
     private PlatformMenuService platformMenuService;
     @Autowired
-    private PlatformMenuPermissionService platformMenuPermissionService;
-    @Autowired
     private PlatformPermissionService platformPermissionService;
 
     @Override
@@ -113,34 +111,15 @@ public class PlatformRoleMenuServiceImpl extends ServiceImpl<PlatformRoleMenuDao
     }
 
     @Override
-    public PageResult<PlatformPermissionVo> getPlatformBoundPermissionList(PlatformRolePermissionSearchDto search) {
-        Long roleId = search.getRoleId();
-        Set<Long> menuIds = list(new LambdaQueryWrapper<PlatformRoleMenuEntity>()
-                .select(PlatformRoleMenuEntity::getMenuId)
-                .eq(PlatformRoleMenuEntity::getRoleId, roleId))
-                .stream().map(PlatformRoleMenuEntity::getMenuId)
-                .collect(Collectors.toSet());
+    public List<Long> getPlatformRoleIdsByMenuIds(List<Long> menuIds) {
         if (CollectionUtils.isEmpty(menuIds)) {
-            return PageResult.empty();
+            return null;
         }
-
-        Set<Long> permissionIds = platformMenuPermissionService.list(new LambdaQueryWrapper<PlatformMenuPermissionEntity>()
-                        .select(PlatformMenuPermissionEntity::getPermissionId)
-                        .in(PlatformMenuPermissionEntity::getMenuId, menuIds))
-                .stream().map(PlatformMenuPermissionEntity::getPermissionId)
-                .collect(Collectors.toSet());
-        if (CollectionUtils.isEmpty(permissionIds)) {
-            return PageResult.empty();
-        }
-
-        IPage<PlatformPermissionEntity> page = platformPermissionService.page(search.getPage(), new LambdaQueryWrapper<PlatformPermissionEntity>()
-                .in(PlatformPermissionEntity::getId, permissionIds));
-        List<PlatformPermissionVo> permissionVos = page.getRecords().stream().map(permission -> {
-            PlatformPermissionVo permissionVo = new PlatformPermissionVo();
-            BeanUtils.copyProperties(permission, permissionVo);
-            return permissionVo;
-        }).collect(Collectors.toList());
-
-        return PageResult.convert(page, permissionVos);
+        LambdaQueryWrapper<PlatformRoleMenuEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(PlatformRoleMenuEntity::getRoleId);
+        wrapper.in(PlatformRoleMenuEntity::getMenuId, menuIds);
+        return list(wrapper).stream()
+                .map(PlatformRoleMenuEntity::getRoleId)
+                .collect(Collectors.toList());
     }
 }

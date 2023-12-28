@@ -26,5 +26,7 @@ public interface PlatformRolePermissionService extends IService<PlatformRolePerm
     PageResult<PlatformPermissionVo> getPlatformBoundPermissionList(PlatformRolePermissionSearchDto search);
 
     PageResult<PlatformPermissionVo> getPlatformUnboundPermissionList(PlatformRolePermissionSearchDto search);
+
+    List<Long> getPlatformRoleIdsByPermissionId(Long permissionId);
 }
 

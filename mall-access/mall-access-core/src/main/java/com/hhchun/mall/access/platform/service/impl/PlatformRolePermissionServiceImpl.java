@@ -12,11 +12,14 @@ import com.hhchun.mall.access.platform.entity.domain.PlatformRolePermissionEntit
 import com.hhchun.mall.access.platform.entity.dto.PlatformRolePermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
+import com.hhchun.mall.access.platform.event.Action;
+import com.hhchun.mall.access.platform.event.PlatformRolePermissionEvent;
 import com.hhchun.mall.access.platform.service.PlatformPermissionService;
 import com.hhchun.mall.access.platform.service.PlatformRolePermissionService;
 import com.hhchun.mall.access.platform.service.PlatformRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,9 @@ public class PlatformRolePermissionServiceImpl extends ServiceImpl<PlatformRoleP
     private PlatformRoleService platformRoleService;
     @Autowired
     private PlatformPermissionService platformPermissionService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     @Transactional
@@ -59,11 +65,16 @@ public class PlatformRolePermissionServiceImpl extends ServiceImpl<PlatformRoleP
         }).collect(Collectors.toList());
 
         saveBatch(rolePermissions);
+
+        publisher.publishEvent(new PlatformRolePermissionEvent(this, Action.SAVE, roleId));
     }
 
     @Override
     public void removePlatformRolePermission(Long rolePermissionId) {
+        PlatformRolePermissionEntity rolePermission = getById(rolePermissionId);
         removeById(rolePermissionId);
+
+        publisher.publishEvent(new PlatformRolePermissionEvent(this, Action.REMOVE, rolePermission.getRoleId()));
     }
 
     @Override
@@ -111,5 +122,15 @@ public class PlatformRolePermissionServiceImpl extends ServiceImpl<PlatformRoleP
         }).collect(Collectors.toList());
 
         return PageResult.convert(page, permissionVos);
+    }
+
+    @Override
+    public List<Long> getPlatformRoleIdsByPermissionId(Long permissionId) {
+        LambdaQueryWrapper<PlatformRolePermissionEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(PlatformRolePermissionEntity::getRoleId);
+        wrapper.eq(PlatformRolePermissionEntity::getPermissionId, permissionId);
+        return list(wrapper).stream()
+                .map(PlatformRolePermissionEntity::getRoleId)
+                .collect(Collectors.toList());
     }
 }

@@ -27,8 +27,6 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
     private PlatformRolePermissionService platformRolePermissionService;
     @Autowired
     private PlatformRoleMenuService platformRoleMenuService;
-    @Autowired
-    private PlatformMenuPermissionService platformMenuPermissionService;
 
     @Override
     public List<Permission> getAllPermission() {
@@ -51,7 +49,6 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
         if (CollectionUtils.isEmpty(roleIds)) {
             return Collections.emptyList();
         }
-        // 1.角色关联权限
         LambdaQueryWrapper<PlatformRolePermissionEntity> rolePermissionWrapper = new LambdaQueryWrapper<PlatformRolePermissionEntity>()
                 .select(PlatformRolePermissionEntity::getPermissionId)
                 .in(PlatformRolePermissionEntity::getRoleId, roleIds);
@@ -59,24 +56,6 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
                 .stream()
                 .map(PlatformRolePermissionEntity::getPermissionId)
                 .collect(Collectors.toList());
-
-        // 2.角色关联菜单,菜单关联权限
-        LambdaQueryWrapper<PlatformRoleMenuEntity> roleMenuWrapper = new LambdaQueryWrapper<PlatformRoleMenuEntity>()
-                .select(PlatformRoleMenuEntity::getMenuId)
-                .in(PlatformRoleMenuEntity::getRoleId, roleIds);
-        List<Long> menuIds = platformRoleMenuService.list(roleMenuWrapper)
-                .stream().map(PlatformRoleMenuEntity::getMenuId)
-                .collect(Collectors.toList());
-        if (!CollectionUtils.isEmpty(menuIds)) {
-            LambdaQueryWrapper<PlatformMenuPermissionEntity> menuPermissionWrapper = new LambdaQueryWrapper<PlatformMenuPermissionEntity>()
-                    .select(PlatformMenuPermissionEntity::getPermissionId)
-                    .in(PlatformMenuPermissionEntity::getMenuId, menuIds);
-            List<Long> menuToPermissionIds = platformMenuPermissionService.list(menuPermissionWrapper)
-                    .stream().map(PlatformMenuPermissionEntity::getPermissionId)
-                    .collect(Collectors.toList());
-            // 追加
-            permissionIds.addAll(menuToPermissionIds);
-        }
         if (CollectionUtils.isEmpty(permissionIds)) {
             return Collections.emptyList();
         }
@@ -97,5 +76,20 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
         return platformPermissionService.list(wrapper).stream()
                 .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void invalidateAllPermission() {
+        // null
+    }
+
+    @Override
+    public void invalidateOwnedPermission(Long platformUserId) {
+        // null
+    }
+
+    @Override
+    public void invalidateOvertPermission() {
+        // null
     }
 }

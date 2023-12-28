@@ -167,6 +167,22 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
     }
 
     @Override
+    public void invalidateAllPermission() {
+        redisTemplate.delete(REDIS_ALL_PERMISSION_KEY);
+    }
+
+    @Override
+    public void invalidateOvertPermission() {
+        redisTemplate.delete(REDIS_OVERT_PERMISSION_KEY);
+    }
+
+    @Override
+    public void invalidateOwnedPermission(Long platformUserId) {
+        String key = REDIS_USER_PERMISSION_KEY_PREFIX + platformUserId;
+        redisTemplate.delete(key);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         if (listOps == null) {
             listOps = redisTemplate.opsForList();

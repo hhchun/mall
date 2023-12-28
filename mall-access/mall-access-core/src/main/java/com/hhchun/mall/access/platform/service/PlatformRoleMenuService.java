@@ -9,6 +9,8 @@ import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionS
 import com.hhchun.mall.access.platform.entity.vo.PlatformMenuVo;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
 
+import java.util.List;
+
 /**
  * 平台角色关联菜单
  *
@@ -26,6 +28,6 @@ public interface PlatformRoleMenuService extends IService<PlatformRoleMenuEntity
 
     PageResult<PlatformMenuVo> getPlatformUnboundMenuList(PlatformRoleMenuSearchDto search);
 
-    PageResult<PlatformPermissionVo> getPlatformBoundPermissionList(PlatformRolePermissionSearchDto search);
+    List<Long> getPlatformRoleIdsByMenuIds(List<Long> menuIds);
 }
 

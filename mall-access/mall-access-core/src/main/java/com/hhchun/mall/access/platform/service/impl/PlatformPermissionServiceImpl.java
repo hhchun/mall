@@ -9,13 +9,16 @@ import com.hhchun.mall.access.platform.dao.PlatformPermissionDao;
 import com.hhchun.mall.access.platform.entity.dto.PlatformPermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformPermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
+import com.hhchun.mall.access.platform.event.Action;
+import com.hhchun.mall.access.platform.event.PlatformPermissionEvent;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import com.hhchun.mall.access.platform.entity.domain.PlatformPermissionEntity;
 import com.hhchun.mall.access.platform.service.PlatformPermissionService;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -26,6 +29,9 @@ import java.util.stream.Collectors;
 @Service("platformPermissionService")
 public class PlatformPermissionServiceImpl extends ServiceImpl<PlatformPermissionDao, PlatformPermissionEntity> implements PlatformPermissionService {
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @Override
     public void savePlatformPermission(PlatformPermissionDto permissionDto) {
         String symbol = permissionDto.getSymbol();
@@ -34,6 +40,7 @@ public class PlatformPermissionServiceImpl extends ServiceImpl<PlatformPermissio
         permission = new PlatformPermissionEntity();
         BeanUtils.copyProperties(permissionDto, permission);
         save(permission);
+        publisher.publishEvent(new PlatformPermissionEvent(this, Action.SAVE, permission.getId()));
     }
 
     @Override
@@ -51,6 +58,7 @@ public class PlatformPermissionServiceImpl extends ServiceImpl<PlatformPermissio
         PlatformPermissionEntity modifyPermission = new PlatformPermissionEntity();
         BeanUtils.copyProperties(permissionDto, modifyPermission);
         updateById(modifyPermission);
+        publisher.publishEvent(new PlatformPermissionEvent(this, Action.MODIFY, permissionId));
     }
 
     @Nullable
@@ -71,6 +79,7 @@ public class PlatformPermissionServiceImpl extends ServiceImpl<PlatformPermissio
     @Override
     public void removePlatformPermission(Long permissionId) {
         removeById(permissionId);
+        publisher.publishEvent(new PlatformPermissionEvent(this, Action.REMOVE, permissionId));
     }
 
     @Override
