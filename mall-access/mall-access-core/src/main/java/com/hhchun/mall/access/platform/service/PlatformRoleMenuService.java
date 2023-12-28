@@ -5,9 +5,7 @@ import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRoleMenuEntity;
 import com.hhchun.mall.access.platform.entity.dto.PlatformRoleMenuDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRoleMenuSearchDto;
-import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformMenuVo;
-import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
 
 import java.util.List;
 

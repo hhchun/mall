@@ -13,7 +13,6 @@ import com.hhchun.mall.access.platform.event.Action;
 import com.hhchun.mall.access.platform.event.PlatformRoleEvent;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;

@@ -3,7 +3,6 @@ package com.hhchun.mall.access.platform.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRolePermissionEntity;
-import com.hhchun.mall.access.platform.entity.dto.PlatformPermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.PlatformRolePermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;

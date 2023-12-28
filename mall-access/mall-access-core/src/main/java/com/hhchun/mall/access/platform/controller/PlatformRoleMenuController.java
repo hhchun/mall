@@ -5,9 +5,7 @@ import com.hhchun.mall.access.common.constant.ValidationConstant.*;
 import com.hhchun.mall.access.common.utils.PageResult;
 import com.hhchun.mall.access.platform.entity.dto.PlatformRoleMenuDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRoleMenuSearchDto;
-import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformMenuVo;
-import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.validation.annotation.Validated;
