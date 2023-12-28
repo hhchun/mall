@@ -41,7 +41,7 @@ public class PlatformRoleController {
     }
 
     @PostMapping("/remove/{roleId}")
-    public R<?> removePlatformRole(@PathVariable String roleId) {
+    public R<?> removePlatformRole(@PathVariable Long roleId) {
         platformRoleService.removePlatformRole(roleId);
 
         return R.success();
