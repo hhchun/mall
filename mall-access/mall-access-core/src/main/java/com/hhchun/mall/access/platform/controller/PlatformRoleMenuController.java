@@ -61,14 +61,4 @@ public class PlatformRoleMenuController {
         return R.success(result);
     }
 
-    /**
-     * 获取当前角色绑定的菜单下绑定的权限
-     */
-    @PostMapping("/bound-permission-list")
-    public R<PageResult<PlatformPermissionVo>> getPlatformBoundPermissionList(@RequestBody PlatformRolePermissionSearchDto search) {
-        PageResult<PlatformPermissionVo> result = platformRoleMenuService.getPlatformBoundPermissionList(search);
-
-        return R.success(result);
-    }
-
 }
