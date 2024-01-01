@@ -7,6 +7,8 @@ import com.hhchun.mall.access.platform.entity.dto.PlatformRolePermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformRolePermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
 
+import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,12 +22,22 @@ public interface PlatformRolePermissionService extends IService<PlatformRolePerm
 
     void savePlatformRolePermissions(PlatformRolePermissionDto rolePermissionDto);
 
-    void removePlatformRolePermission(Long platformRolePermissionId);
-
-    PageResult<PlatformPermissionVo> getPlatformBoundPermissionList(PlatformRolePermissionSearchDto search);
-
-    PageResult<PlatformPermissionVo> getPlatformUnboundPermissionList(PlatformRolePermissionSearchDto search);
+    PageResult<PlatformPermissionVo> getPlatformPermissions(PlatformRolePermissionSearchDto search);
 
     List<Long> getPlatformRoleIdsByPermissionId(Long permissionId);
+
+    /**
+     * <p>
+     * 根据权限id查询关联的所有角色id,包括已被删除(逻辑删除)的。
+     * </p>
+     *
+     * @param permissionId 权限id
+     * @return 角色id
+     */
+    @Nonnull
+    List<Long> getPlatformRemovedRoleIdsByPermissionId(Long permissionId);
+
+    @Nonnull
+    List<Long> getPlatformPermissionIdsByRoleIds(Collection<Long> roleIds);
 }
 

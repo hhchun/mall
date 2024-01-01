@@ -1,11 +1,13 @@
 package com.hhchun.mall.access.platform.entity.dto;
 
 import com.hhchun.mall.access.common.constant.ValidationConstant.*;
+import com.hhchun.mall.access.platform.constant.PlatformOtherConstant;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,20 +20,27 @@ import java.util.Set;
 @Data
 public class PlatformUserRoleDto implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-    private Long id;
     /**
      * 平台用户id
      */
     @NotNull(groups = ADD.class, message = "平台用户id不能为空")
     private Long userId;
     /**
-     * 角色id
+     * 角色
      */
-    @NotEmpty(groups = ADD.class, message = "没有选择角色")
-    private Set<Long> roleIds;
+    private List<Role> roles;
+
+    @Data
+    public static class Role {
+        /**
+         * 角色id
+         */
+        private Long roleId;
+        /**
+         * 绑定{@link PlatformOtherConstant#TABLE_RELATION_ACTION_BOUND}
+         * 解绑{@link PlatformOtherConstant#TABLE_RELATION_ACTION_UNBOUND
+         */
+        private Integer action;
+    }
 
 }

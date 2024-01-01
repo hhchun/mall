@@ -56,5 +56,9 @@ public class PlatformMenuEntity implements Serializable {
 	 * 公开的菜单,0-否、1-是
 	 */
 	private Integer overt;
+	/**
+	 * 层级/路径
+	 */
+	private String route;
 
 }

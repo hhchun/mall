@@ -2,22 +2,23 @@ package com.hhchun.mall.access.platform.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.google.common.collect.Sets;
-import com.hhchun.mall.access.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.hhchun.mall.access.common.utils.PageResult;
+import com.hhchun.mall.access.platform.constant.PlatformOtherConstant;
 import com.hhchun.mall.access.platform.dao.PlatformUserRoleDao;
-import com.hhchun.mall.access.platform.entity.domain.PlatformRoleEntity;
-import com.hhchun.mall.access.platform.entity.domain.PlatformUserEntity;
+import com.hhchun.mall.access.platform.entity.bo.PlatformRoleBo;
 import com.hhchun.mall.access.platform.entity.dto.PlatformUserRoleDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformUserRoleSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformRoleVo;
 import com.hhchun.mall.access.platform.event.Action;
+import com.hhchun.mall.access.platform.event.PlatformRoleEvent;
 import com.hhchun.mall.access.platform.event.PlatformUserRoleEvent;
-import com.hhchun.mall.access.platform.service.PlatformRoleService;
-import com.hhchun.mall.access.platform.service.PlatformUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hhchun.mall.access.platform.entity.domain.PlatformUserRoleEntity;
@@ -31,11 +32,8 @@ import java.util.stream.Collectors;
 
 @Service("platformUserRoleService")
 public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao, PlatformUserRoleEntity> implements PlatformUserRoleService {
-
     @Autowired
-    private PlatformUserService platformUserService;
-    @Autowired
-    private PlatformRoleService platformRoleService;
+    private PlatformUserRoleDao platformUserRoleDao;
 
     @Autowired
     private ApplicationEventPublisher publisher;
@@ -44,79 +42,51 @@ public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao
     @Override
     public void savePlatformUserRoles(PlatformUserRoleDto userRoleDto) {
         Long userId = userRoleDto.getUserId();
-        Set<Long> roleIds = userRoleDto.getRoleIds();
+        List<PlatformUserRoleDto.Role> roles = userRoleDto.getRoles();
 
-        Set<Long> existRoleIds = list(new LambdaQueryWrapper<PlatformUserRoleEntity>()
-                .select(PlatformUserRoleEntity::getRoleId)
-                .eq(PlatformUserRoleEntity::getUserId, userId)
-                .in(PlatformUserRoleEntity::getRoleId, roleIds))
-                .stream().map(PlatformUserRoleEntity::getRoleId)
-                .collect(Collectors.toSet());
-        // 过滤掉已存在的
-        roleIds = Sets.difference(roleIds, existRoleIds);
+        List<Long> unboundRoleIds = roles.stream()
+                .filter(p -> Objects.equals(p.getAction(), PlatformOtherConstant.TABLE_RELATION_ACTION_UNBOUND))
+                .map(PlatformUserRoleDto.Role::getRoleId)
+                .collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(unboundRoleIds)) {
+            remove(new LambdaQueryWrapper<PlatformUserRoleEntity>()
+                    .eq(PlatformUserRoleEntity::getUserId, userId)
+                    .in(PlatformUserRoleEntity::getRoleId, unboundRoleIds));
+        }
 
-        PlatformUserEntity platformUser = platformUserService.getPlatformUserById(userId);
-        Preconditions.checkCondition(platformUser != null, "用户不存在");
-        List<PlatformUserRoleEntity> userRoles = roleIds.stream().map(roleId -> {
-            PlatformUserRoleEntity userRole = new PlatformUserRoleEntity();
-            userRole.setUserId(userId);
-            userRole.setRoleId(roleId);
-            return userRole;
-        }).collect(Collectors.toList());
-        saveBatch(userRoles);
+        List<Long> boundRoleIds = roles.stream()
+                .filter(p -> Objects.equals(p.getAction(), PlatformOtherConstant.TABLE_RELATION_ACTION_BOUND))
+                .map(PlatformUserRoleDto.Role::getRoleId)
+                .collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(boundRoleIds)) {
+            List<PlatformUserRoleEntity> rolePermissions = boundRoleIds.stream().map(roleId -> {
+                PlatformUserRoleEntity userRole = new PlatformUserRoleEntity();
+                userRole.setUserId(userId);
+                userRole.setRoleId(roleId);
+                return userRole;
+            }).collect(Collectors.toList());
+            saveBatch(rolePermissions);
+        }
 
         publisher.publishEvent(new PlatformUserRoleEvent(this, Action.SAVE, userId));
     }
 
     @Override
-    public void removePlatformUserRole(Long userRoleId) {
-        PlatformUserRoleEntity userRole = getById(userRoleId);
-        removeById(userRoleId);
-
-        publisher.publishEvent(new PlatformUserRoleEvent(this, Action.REMOVE, userRole.getUserId()));
-    }
-
-    @Override
-    public PageResult<PlatformRoleVo> getPlatformBoundRoleList(PlatformUserRoleSearchDto search) {
-        Long userId = search.getUserId();
-        List<PlatformUserRoleEntity> userRoles = list(new LambdaQueryWrapper<PlatformUserRoleEntity>()
-                .select(PlatformUserRoleEntity::getRoleId)
-                .eq(PlatformUserRoleEntity::getUserId, userId));
-        List<Long> roleIds = userRoles.stream().map(PlatformUserRoleEntity::getRoleId).collect(Collectors.toList());
-        if (CollectionUtils.isEmpty(roleIds)) {
-            return PageResult.empty();
-        }
-        IPage<PlatformRoleEntity> page = platformRoleService.page(search.getPage(), new LambdaQueryWrapper<PlatformRoleEntity>()
-                .in(PlatformRoleEntity::getId, roleIds));
-        List<PlatformRoleEntity> roles = page.getRecords();
-        List<PlatformRoleVo> roleVos = roles.stream().map(role -> {
-            PlatformRoleVo roleVo = new PlatformRoleVo();
-            BeanUtils.copyProperties(role, roleVo);
-            return roleVo;
+    public PageResult<PlatformRoleVo> getPlatformRoles(PlatformUserRoleSearchDto search) {
+        IPage<PlatformRoleBo> page = platformUserRoleDao.getPlatformRoles(search.getPage(), search);
+        List<PlatformRoleVo> rvs = page.getRecords().stream().map(rb -> {
+            PlatformRoleVo rv = new PlatformRoleVo();
+            BeanUtils.copyProperties(rb, rv);
+            return rv;
         }).collect(Collectors.toList());
-        return PageResult.convert(page, roleVos);
-    }
-
-    @Override
-    public PageResult<PlatformRoleVo> getPlatformUnboundRoleList(PlatformUserRoleSearchDto search) {
-        Long userId = search.getUserId();
-        List<PlatformUserRoleEntity> userRoles = list(new LambdaQueryWrapper<PlatformUserRoleEntity>()
-                .select(PlatformUserRoleEntity::getRoleId)
-                .eq(PlatformUserRoleEntity::getUserId, userId));
-        List<Long> roleIds = userRoles.stream().map(PlatformUserRoleEntity::getRoleId).collect(Collectors.toList());
-        IPage<PlatformRoleEntity> page = platformRoleService.page(search.getPage(), new LambdaQueryWrapper<PlatformRoleEntity>()
-                .notIn(!CollectionUtils.isEmpty(roleIds), PlatformRoleEntity::getId, roleIds));
-        List<PlatformRoleEntity> roles = page.getRecords();
-        List<PlatformRoleVo> roleVos = roles.stream().map(role -> {
-            PlatformRoleVo roleVo = new PlatformRoleVo();
-            BeanUtils.copyProperties(role, roleVo);
-            return roleVo;
-        }).collect(Collectors.toList());
-        return PageResult.convert(page, roleVos);
+        return PageResult.convert(page, rvs);
     }
 
     @Override
     public List<Long> getPlatformUserIdsByRoleIds(List<Long> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
         LambdaQueryWrapper<PlatformUserRoleEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.select(PlatformUserRoleEntity::getUserId);
         wrapper.in(PlatformUserRoleEntity::getRoleId, roleIds);
@@ -124,4 +94,32 @@ public class PlatformUserRoleServiceImpl extends ServiceImpl<PlatformUserRoleDao
                 .map(PlatformUserRoleEntity::getUserId)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Long> getPlatformRemovedUserIdsByRoleIds(List<Long> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
+        return platformUserRoleDao.getPlatformRemovedUserIdsByRoleIds(roleIds);
+    }
+
+    @Override
+    public List<Long> getPlatformRoleIdsByUserId(Long userId) {
+        LambdaQueryWrapper<PlatformUserRoleEntity> userRoleWrapper = new LambdaQueryWrapper<PlatformUserRoleEntity>()
+                .select(PlatformUserRoleEntity::getRoleId)
+                .eq(PlatformUserRoleEntity::getUserId, userId);
+        return list(userRoleWrapper)
+                .stream()
+                .map(PlatformUserRoleEntity::getRoleId)
+                .collect(Collectors.toList());
+    }
+
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @EventListener(value = PlatformRoleEvent.class, condition = "event.action.equals(event.action.REMOVE)")
+    public void listenRemovedPlatformRoleEvent(PlatformRoleEvent event) {
+        remove(new LambdaQueryWrapper<PlatformUserRoleEntity>()
+                .eq(PlatformUserRoleEntity::getRoleId, event.getRoleId()));
+    }
+
+
 }

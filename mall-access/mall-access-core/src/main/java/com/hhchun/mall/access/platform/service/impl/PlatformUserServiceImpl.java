@@ -1,9 +1,7 @@
 package com.hhchun.mall.access.platform.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hhchun.mall.access.common.base.Preconditions;
 import com.hhchun.mall.access.common.utils.PageResult;
@@ -13,7 +11,6 @@ import com.hhchun.mall.access.platform.entity.dto.LoginPlatformUserDto;
 import com.hhchun.mall.access.platform.entity.dto.PlatformUserDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformUserSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformUserVo;
-import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

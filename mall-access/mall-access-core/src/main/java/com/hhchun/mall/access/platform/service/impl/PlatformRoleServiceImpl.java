@@ -77,7 +77,7 @@ public class PlatformRoleServiceImpl extends ServiceImpl<PlatformRoleDao, Platfo
     public void removePlatformRole(Long roleId) {
         removeById(roleId);
 
-        publisher.publishEvent(new PlatformRoleEvent(this, Action.MODIFY, roleId));
+        publisher.publishEvent(new PlatformRoleEvent(this, Action.REMOVE, roleId));
     }
 
     @Override

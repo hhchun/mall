@@ -26,33 +26,18 @@ public class PlatformRolePermissionController {
     @Autowired
     private PlatformRolePermissionService platformRolePermissionService;
 
-    @PostMapping("/saves")
+    @PostMapping("/save")
     public R<?> savePlatformRolePermissions(@RequestBody @Validated(ADD.class) PlatformRolePermissionDto rolePermissionDto) {
         platformRolePermissionService.savePlatformRolePermissions(rolePermissionDto);
 
         return R.success();
     }
 
-    @PostMapping("/remove/{rolePermissionId}")
-    public R<?> removePlatformRolePermission(@PathVariable Long rolePermissionId) {
-        platformRolePermissionService.removePlatformRolePermission(rolePermissionId);
-
-        return R.success();
-    }
-
-    @PostMapping("/bound-permission-list")
-    public R<PageResult<PlatformPermissionVo>> getPlatformBoundPermissionList(@RequestBody PlatformRolePermissionSearchDto search) {
-        PageResult<PlatformPermissionVo> result = platformRolePermissionService.getPlatformBoundPermissionList(search);
+    @PostMapping("/permissions")
+    public R<PageResult<PlatformPermissionVo>> getPlatformPermissions(@RequestBody @Validated PlatformRolePermissionSearchDto search) {
+        PageResult<PlatformPermissionVo> result = platformRolePermissionService.getPlatformPermissions(search);
 
         return R.success(result);
     }
-
-    @PostMapping("/unbound-permission-list")
-    public R<PageResult<PlatformPermissionVo>> getPlatformUnboundPermissionList(@RequestBody PlatformRolePermissionSearchDto search) {
-        PageResult<PlatformPermissionVo> result = platformRolePermissionService.getPlatformUnboundPermissionList(search);
-
-        return R.success(result);
-    }
-
 
 }

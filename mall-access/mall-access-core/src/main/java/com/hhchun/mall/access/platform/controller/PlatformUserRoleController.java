@@ -27,32 +27,17 @@ public class PlatformUserRoleController {
     @Autowired
     private PlatformUserRoleService platformUserRoleService;
 
-    @PostMapping("/saves")
+    @PostMapping("/save")
     public R<?> savePlatformUserRoles(@RequestBody @Validated(ADD.class) PlatformUserRoleDto userRoleDto) {
         platformUserRoleService.savePlatformUserRoles(userRoleDto);
 
         return R.success();
     }
 
-    @PostMapping("/remove/{userRoleId}")
-    public R<?> removePlatformUserRole(@PathVariable Long userRoleId) {
-        platformUserRoleService.removePlatformUserRole(userRoleId);
-
-        return R.success();
-    }
-
-    @PostMapping("/bound-role-list")
-    public R<PageResult<PlatformRoleVo>> getPlatformBoundRoleList(@RequestBody PlatformUserRoleSearchDto search) {
-        PageResult<PlatformRoleVo> result = platformUserRoleService.getPlatformBoundRoleList(search);
+    @PostMapping("/roles")
+    public R<PageResult<PlatformRoleVo>> getPlatformRoles(@RequestBody @Validated PlatformUserRoleSearchDto search) {
+        PageResult<PlatformRoleVo> result = platformUserRoleService.getPlatformRoles(search);
 
         return R.success(result);
     }
-
-    @PostMapping("/unbound-role-list")
-    public R<PageResult<PlatformRoleVo>> getPlatformUnboundRoleList(@RequestBody PlatformUserRoleSearchDto search) {
-        PageResult<PlatformRoleVo> result = platformUserRoleService.getPlatformUnboundRoleList(search);
-
-        return R.success(result);
-    }
-
 }

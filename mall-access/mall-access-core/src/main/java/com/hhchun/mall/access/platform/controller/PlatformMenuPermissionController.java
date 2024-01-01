@@ -27,30 +27,16 @@ public class PlatformMenuPermissionController {
     @Autowired
     private PlatformMenuPermissionService platformMenuPermissionService;
 
-    @PostMapping("/saves")
+    @PostMapping("/save")
     public R<?> saveMenuPermissions(@RequestBody @Validated(ADD.class) PlatformMenuPermissionDto menuPermissionDto) {
         platformMenuPermissionService.saveMenuPermissions(menuPermissionDto);
 
         return R.success();
     }
 
-    @PostMapping("/remove/{menuPermissionId}")
-    public R<?> removeMenuPermission(@PathVariable Long menuPermissionId) {
-        platformMenuPermissionService.removeMenuPermission(menuPermissionId);
-
-        return R.success();
-    }
-
-    @PostMapping("/bound-permission-list")
-    public R<PageResult<PlatformPermissionVo>> getPlatformBoundPermissionList(@RequestBody PlatformMenuPermissionSearchDto search) {
-        PageResult<PlatformPermissionVo> result = platformMenuPermissionService.getPlatformBoundPermissionList(search);
-
-        return R.success(result);
-    }
-
-    @PostMapping("/unbound-permission-list")
-    public R<PageResult<PlatformPermissionVo>> getPlatformUnboundPermissionList(@RequestBody PlatformMenuPermissionSearchDto search) {
-        PageResult<PlatformPermissionVo> result = platformMenuPermissionService.getPlatformUnboundPermissionList(search);
+    @PostMapping("/permissions")
+    public R<PageResult<PlatformPermissionVo>> getPlatformPermissions(@RequestBody @Validated PlatformMenuPermissionSearchDto search) {
+        PageResult<PlatformPermissionVo> result = platformMenuPermissionService.getPlatformPermissions(search);
 
         return R.success(result);
     }

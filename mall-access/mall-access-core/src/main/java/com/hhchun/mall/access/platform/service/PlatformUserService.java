@@ -30,5 +30,8 @@ public interface PlatformUserService extends IService<PlatformUserEntity> {
     PageResult<PlatformUserVo> getPlatformUserList(PlatformUserSearchDto search);
 
     String loginPlatformUser(LoginPlatformUserDto loginUserDto);
+
+
+    // 根据用户id获取用户拥有的所有菜单数据
 }
 

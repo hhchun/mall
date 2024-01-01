@@ -21,12 +21,12 @@ public interface PlatformUserRoleService extends IService<PlatformUserRoleEntity
 
     void savePlatformUserRoles(PlatformUserRoleDto userRoleDto);
 
-    void removePlatformUserRole(Long userRoleId);
-
-    PageResult<PlatformRoleVo> getPlatformBoundRoleList(PlatformUserRoleSearchDto search);
-
-    PageResult<PlatformRoleVo> getPlatformUnboundRoleList(PlatformUserRoleSearchDto search);
+    PageResult<PlatformRoleVo> getPlatformRoles(PlatformUserRoleSearchDto search);
 
     List<Long> getPlatformUserIdsByRoleIds(List<Long> roleIds);
+
+    List<Long> getPlatformRemovedUserIdsByRoleIds(List<Long> roleIds);
+
+    List<Long> getPlatformRoleIdsByUserId(Long userId);
 }
 

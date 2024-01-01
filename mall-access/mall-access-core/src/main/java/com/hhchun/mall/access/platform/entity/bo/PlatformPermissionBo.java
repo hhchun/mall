@@ -1,6 +1,5 @@
-package com.hhchun.mall.access.platform.entity.vo;
+package com.hhchun.mall.access.platform.entity.bo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,9 +13,8 @@ import java.time.LocalDateTime;
  * @date 2023-12-01 23:20:10
  */
 @Data
-public class PlatformPermissionVo implements Serializable {
+public class PlatformPermissionBo implements Serializable {
     private static final long serialVersionUID = 1L;
-
     /**
      * id
      */
@@ -24,12 +22,10 @@ public class PlatformPermissionVo implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     /**
      * 修改时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     /**
      * 权限标识
@@ -55,5 +51,4 @@ public class PlatformPermissionVo implements Serializable {
      * 是否拥有,0-否、1-是
      */
     private Integer owned;
-
 }

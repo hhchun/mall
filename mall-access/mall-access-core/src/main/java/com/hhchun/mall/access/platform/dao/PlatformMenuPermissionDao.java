@@ -1,8 +1,12 @@
 package com.hhchun.mall.access.platform.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hhchun.mall.access.platform.entity.bo.PlatformPermissionBo;
 import com.hhchun.mall.access.platform.entity.domain.PlatformMenuPermissionEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hhchun.mall.access.platform.entity.dto.search.PlatformMenuPermissionSearchDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 平台菜单关联权限
@@ -13,5 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PlatformMenuPermissionDao extends BaseMapper<PlatformMenuPermissionEntity> {
-	
+
+    IPage<PlatformPermissionBo> getPlatformPermissions(@Param("page") IPage<Object> page,
+                                                       @Param("search") PlatformMenuPermissionSearchDto search);
 }

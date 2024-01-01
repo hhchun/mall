@@ -6,6 +6,10 @@ import com.hhchun.mall.access.platform.entity.domain.PlatformMenuPermissionEntit
 import com.hhchun.mall.access.platform.entity.dto.PlatformMenuPermissionDto;
 import com.hhchun.mall.access.platform.entity.dto.search.PlatformMenuPermissionSearchDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
+import com.sun.istack.internal.NotNull;
+
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -19,10 +23,9 @@ public interface PlatformMenuPermissionService extends IService<PlatformMenuPerm
 
     void saveMenuPermissions(PlatformMenuPermissionDto menuPermissionDto);
 
-    void removeMenuPermission(Long menuPermissionId);
+    PageResult<PlatformPermissionVo> getPlatformPermissions(PlatformMenuPermissionSearchDto search);
 
-    PageResult<PlatformPermissionVo> getPlatformBoundPermissionList(PlatformMenuPermissionSearchDto search);
-
-    PageResult<PlatformPermissionVo> getPlatformUnboundPermissionList(PlatformMenuPermissionSearchDto search);
+    @NotNull
+    List<Long> getPlatformPermissionIdsByMenuIds(Collection<Long> menuIds);
 }
 

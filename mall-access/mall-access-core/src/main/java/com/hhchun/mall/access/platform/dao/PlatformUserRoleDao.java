@@ -1,8 +1,14 @@
 package com.hhchun.mall.access.platform.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hhchun.mall.access.platform.entity.bo.PlatformRoleBo;
 import com.hhchun.mall.access.platform.entity.domain.PlatformUserRoleEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hhchun.mall.access.platform.entity.dto.search.PlatformUserRoleSearchDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 平台用户关联角色
@@ -13,5 +19,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PlatformUserRoleDao extends BaseMapper<PlatformUserRoleEntity> {
-	
+
+    IPage<PlatformRoleBo> getPlatformRoles(@Param("page") IPage<Object> page, @Param("search") PlatformUserRoleSearchDto search);
+
+    List<Long> getPlatformRemovedUserIdsByRoleIds(@Param("roleIds") List<Long> roleIds);
 }

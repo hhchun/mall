@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hhchun.mall.access.platform.entity.domain.PlatformMenuEntity;
 import com.hhchun.mall.access.platform.entity.dto.PlatformMenuDto;
 import com.hhchun.mall.access.platform.entity.vo.PlatformMenuVo;
+import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -20,16 +22,21 @@ public interface PlatformMenuService extends IService<PlatformMenuEntity> {
 
     List<PlatformMenuVo> getPlatformMenuTree(@Nullable Long pid);
 
-    void savePlatformMenu(PlatformMenuDto menuDto);
-
     @Nullable
     PlatformMenuEntity getPlatformMenuBySymbol(String symbol);
+
+    @Nullable
+    PlatformMenuEntity getPlatformMenuById(Long id);
+
+    void savePlatformMenu(PlatformMenuDto menuDto);
 
     void modifyPlatformMenu(PlatformMenuDto menuDto);
 
     void removePlatformMenu(Long menuId);
 
-    @Nullable
-    PlatformMenuEntity getPlatformMenuById(Long id);
+    List<Long> getPlatformLowerMenuIdsByRoute(String route);
+
+    @NotNull
+    List<Long> getPlatformUpperMenuIdsByMenuIds(Collection<Long> menuIds);
 }
 

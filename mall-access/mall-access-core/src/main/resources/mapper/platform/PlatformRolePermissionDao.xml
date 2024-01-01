@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhchun.mall.access.platform.dao.PlatformRolePermissionDao">
+
+    <resultMap type="com.hhchun.mall.access.platform.entity.domain.PlatformRolePermissionEntity"
+               id="platformRolePermissionMap">
+        <result property="id" column="id"/>
+        <result property="del" column="del"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="roleId" column="role_id"/>
+        <result property="permissionId" column="permission_id"/>
+    </resultMap>
+    <select id="getPlatformPermissions"
+            resultType="com.hhchun.mall.access.platform.entity.bo.PlatformPermissionBo">
+        SELECT p.id,
+        p.create_time,
+        p.update_time,
+        p.symbol,
+        p.name,
+        p.des,
+        p.subject,
+        p.overt,
+        IF(rp.id IS NOT NULL, 1, 0) AS owned
+        FROM ac_platform_permission AS p
+        LEFT JOIN ac_platform_role_permission AS rp
+        ON rp.role_id = #{search.roleId} AND p.id = rp.permission_id
+        <where>
+            <if test="search.owned != null AND search.owned == 1">
+                AND rp.role_id = #{search.roleId}
+            </if>
+        </where>
+        ORDER BY rp.id DESC
+    </select>
+
+    <select id="getPlatformRemovedRoleIdsByPermissionId" resultType="java.lang.Long">
+        SELECT role_id
+        FROM ac_platform_role_permission
+        WHERE permission_id = #{permissionId}
+    </select>
+
+
+</mapper>

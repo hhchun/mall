@@ -2,21 +2,21 @@ package com.hhchun.mall.access.platform.event;
 
 import org.springframework.context.ApplicationEvent;
 
-public class PlatformUserRoleEvent extends ApplicationEvent {
+public class PlatformRoleMenuEvent extends ApplicationEvent {
     private final Action action;
-    private final Long userId;
+    private final Long roleId;
 
-    public PlatformUserRoleEvent(Object source, Action action, Long userId) {
+    public PlatformRoleMenuEvent(Object source, Action action, Long roleId) {
         super(source);
         this.action = action;
-        this.userId = userId;
+        this.roleId = roleId;
     }
 
     public Action getAction() {
         return action;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getRoleId() {
+        return roleId;
     }
 }

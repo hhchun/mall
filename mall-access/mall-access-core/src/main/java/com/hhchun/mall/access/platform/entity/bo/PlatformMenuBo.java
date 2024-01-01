@@ -1,20 +1,20 @@
-package com.hhchun.mall.access.platform.entity.vo;
+package com.hhchun.mall.access.platform.entity.bo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hhchun.mall.access.platform.constant.PlatformMenuConstant;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 平台权限
+ * 平台菜单
  *
  * @author hhchun
  * @email 12487489@qq.com
- * @date 2023-12-01 23:20:10
+ * @date 2023-12-08 22:58:31
  */
 @Data
-public class PlatformPermissionVo implements Serializable {
+public class PlatformMenuBo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -24,36 +24,40 @@ public class PlatformPermissionVo implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     /**
      * 修改时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     /**
-     * 权限标识
+     * 菜单标识
      */
     private String symbol;
     /**
-     * 权限名称
+     * 菜单名称
      */
     private String name;
+    /**
+     * 类型
+     *
+     * @see PlatformMenuConstant#MENU_TYPE_MENU
+     * @see PlatformMenuConstant#MENU_TYPE_OPERATE
+     */
+    private Integer type;
     /**
      * 描述/备注
      */
     private String des;
     /**
-     * 权限主体
+     * 父菜单id
      */
-    private String subject;
+    private Long pid;
     /**
-     * 公开权限,0-否、1-是
+     * 公开的菜单,0-否、1-是
      */
     private Integer overt;
     /**
      * 是否拥有,0-否、1-是
      */
     private Integer owned;
-
 }

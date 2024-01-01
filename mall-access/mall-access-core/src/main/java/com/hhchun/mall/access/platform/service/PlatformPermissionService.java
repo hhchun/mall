@@ -8,9 +8,6 @@ import com.hhchun.mall.access.platform.entity.dto.search.PlatformPermissionSearc
 import com.hhchun.mall.access.platform.entity.vo.PlatformPermissionVo;
 import com.sun.istack.internal.NotNull;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
-
 /**
  * 平台权限
  *
