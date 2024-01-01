@@ -6,14 +6,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/access_control?useAffectedRows=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+      url: jdbc:mysql://127.0.0.1:3306/mall?useAffectedRows=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
       username: root
       password: 123456
   redis:
-    redisson:
-      config: |
-        singleServerConfig:
-          timeout: 10000
-          address: redis://192.168.31.111:6379
-        codec: !<org.redisson.codec.JsonJacksonCodec> {}
-#        codec: !<org.redisson.codec.Kryo5Codec> {}
+    host: 192.168.31.111
