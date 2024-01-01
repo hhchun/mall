@@ -1,14 +1,12 @@
 package com.hhchun.mall.access.platform.entity.dto;
 
-import com.hhchun.mall.access.common.constant.ValidationConstant.*;
+import com.hhchun.mall.access.common.constant.ValidationConstant.ADD;
 import com.hhchun.mall.access.platform.constant.PlatformOtherConstant;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 平台角色关联菜单

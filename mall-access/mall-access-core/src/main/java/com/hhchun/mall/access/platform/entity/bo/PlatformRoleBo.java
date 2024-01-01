@@ -1,6 +1,5 @@
 package com.hhchun.mall.access.platform.entity.bo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;

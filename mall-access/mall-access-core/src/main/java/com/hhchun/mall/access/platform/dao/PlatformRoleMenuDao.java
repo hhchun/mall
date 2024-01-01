@@ -1,6 +1,5 @@
 package com.hhchun.mall.access.platform.dao;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hhchun.mall.access.platform.entity.bo.PlatformMenuBo;
 import com.hhchun.mall.access.platform.entity.domain.PlatformRoleMenuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
