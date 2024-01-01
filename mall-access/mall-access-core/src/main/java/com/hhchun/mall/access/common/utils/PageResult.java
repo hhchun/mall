@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -63,6 +62,6 @@ public class PageResult<T> implements Serializable {
     }
 
     public static <T> PageResult<T> empty() {
-        return new PageResult<>(Collections.emptyList(), 0L,PageArguments.DEFAULT_PAGE_SIZE, PageArguments.DEFAULT_CURR_PAGE);
+        return new PageResult<>(Lists.newArrayList(), 0L,PageArguments.DEFAULT_PAGE_SIZE, PageArguments.DEFAULT_CURR_PAGE);
     }
 }
