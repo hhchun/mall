@@ -1,9 +1,9 @@
 package com.hhchun.mall.access.support.provider;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class DelegatingTargetAccessiblePermissionsProvider implements TargetRequ
 
     @Override
     public List<Permission> provide() {
-        return trs.stream().flatMap(trs -> Optional.ofNullable(trs.provide()).orElse(Collections.emptyList())
+        return trs.stream().flatMap(trs -> Optional.ofNullable(trs.provide()).orElse(Lists.newArrayList())
                 .stream()).collect(Collectors.toList());
     }
 }

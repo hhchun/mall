@@ -1,11 +1,11 @@
 package com.hhchun.mall.access.support.decision;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
 import com.hhchun.mall.access.support.provider.Permission;
 import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +29,8 @@ public class AbstractAccessDecision implements AccessDecision {
 
     @Override
     public boolean decide() {
-        final List<Permission> subjectOwnedPermissions = Optional.ofNullable(sop.provide()).orElse(Collections.emptyList());
-        final List<Permission> targetAccessiblePermissions = Optional.ofNullable(trs.provide()).orElse(Collections.emptyList());
+        final List<Permission> subjectOwnedPermissions = Optional.ofNullable(sop.provide()).orElse(Lists.newArrayList());
+        final List<Permission> targetAccessiblePermissions = Optional.ofNullable(trs.provide()).orElse(Lists.newArrayList());
         for (Permission targetAccessiblePermission : targetAccessiblePermissions) {
             if (!subjectOwnedPermissions.contains(targetAccessiblePermission)) {
                 return false;
