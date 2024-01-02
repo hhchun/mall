@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.hhchun.mall.common.config.MallCommonCoreConfiguration

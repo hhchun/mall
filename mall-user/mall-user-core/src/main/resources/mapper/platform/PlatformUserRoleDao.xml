@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhchun.mall.access.platform.dao.PlatformUserRoleDao">
+
+    <resultMap type="com.hhchun.mall.user.platform.entity.domain.PlatformUserRoleEntity" id="platformUserRoleMap">
+        <result property="id" column="id"/>
+        <result property="del" column="del"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+    <select id="getPlatformRoles" resultType="com.hhchun.mall.user.platform.entity.bo.PlatformRoleBo">
+        SELECT r.id,
+        r.create_time,
+        r.update_time,
+        r.symbol,
+        r.name,
+        r.des,
+        IF(ur.id IS NOT NULL, 1, 0) AS owned
+        FROM ac_platform_role AS r
+        LEFT JOIN ac_platform_user_role AS ur ON ur.user_id = #{search.userId} AND r.id = ur.role_id
+        <where>
+            <if test="search.owned != null AND search.owned == 1">
+                AND ur.user_id = #{search.userId}
+            </if>
+        </where>
+        ORDER BY ur.id DESC
+    </select>
+    <select id="getPlatformRemovedUserIdsByRoleIds" resultType="java.lang.Long">
+        SELECT *
+        FROM ac_platform_user_role
+        WHERE role_id IN
+        <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </select>
+
+
+</mapper>
