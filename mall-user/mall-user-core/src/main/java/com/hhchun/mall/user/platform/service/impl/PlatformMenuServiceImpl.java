@@ -11,6 +11,8 @@ import com.hhchun.mall.user.platform.entity.dto.PlatformMenuDto;
 import com.hhchun.mall.user.platform.entity.vo.PlatformMenuVo;
 import com.hhchun.mall.user.platform.event.Action;
 import com.hhchun.mall.user.platform.event.PlatformMenuEvent;
+import com.hhchun.mall.user.platform.service.PlatformRoleMenuService;
+import com.hhchun.mall.user.platform.service.PlatformUserRoleService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,11 @@ public class PlatformMenuServiceImpl extends ServiceImpl<PlatformMenuDao, Platfo
     private ApplicationEventPublisher publisher;
     @Autowired
     private PlatformMenuDao platformMenuDao;
+
+    @Autowired
+    private PlatformRoleMenuService platformRoleMenuService;
+    @Autowired
+    private PlatformUserRoleService platformUserRoleService;
 
     @Override
     public List<PlatformMenuVo> getPlatformMenuTree(@Nullable Long pid) {
@@ -147,5 +154,35 @@ public class PlatformMenuServiceImpl extends ServiceImpl<PlatformMenuDao, Platfo
                 .flatMap(m -> StrSplitter.splitPath(m.getRoute()).stream())
                 .map(Long::valueOf)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PlatformMenuVo> getPlatformMenusByUserId(Long userId, boolean upper, boolean combine) {
+        List<Long> roleIds = platformUserRoleService.getPlatformRoleIdsByUserId(userId);
+        List<Long> menuIds = platformRoleMenuService.getPlatformMenuIdsByRoleIds(roleIds);
+        if (CollectionUtils.isEmpty(menuIds)) {
+            return Lists.newArrayList();
+        }
+        List<PlatformMenuEntity> menus = list(new LambdaQueryWrapper<PlatformMenuEntity>()
+                .in(PlatformMenuEntity::getId, menuIds));
+        if (upper) {
+            List<Long> upperMenuIds = menus.stream()
+                    .flatMap(m -> StrSplitter.splitPath(m.getRoute()).stream())
+                    .map(Long::valueOf)
+                    .collect(Collectors.toList());
+            List<PlatformMenuEntity> upperMenus = list(new LambdaQueryWrapper<PlatformMenuEntity>()
+                    .in(PlatformMenuEntity::getId, upperMenuIds));
+            menus.addAll(upperMenus);
+        }
+        List<PlatformMenuVo> mvs = menus.stream().map(m -> {
+            PlatformMenuVo mv = new PlatformMenuVo();
+            BeanUtils.copyProperties(m, mv);
+            return mv;
+        }).collect(Collectors.toList());
+        if (combine && upper) {
+            return PlatformMenuVo.combine(mvs);
+        } else {
+            return mvs;
+        }
     }
 }

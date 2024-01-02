@@ -21,6 +21,7 @@ public interface PlatformRoleMenuService extends IService<PlatformRoleMenuEntity
     void savePlatformRoleMenus(PlatformRoleMenuDto roleMenuDto);
 
     List<PlatformMenuVo> getPlatformMenuTree(PlatformRoleMenuSearchDto search);
+
     List<Long> getPlatformRoleIdsByMenuIds(List<Long> menuIds);
 
     List<Long> getPlatformRemovedRoleIdsByMenuIds(List<Long> menuIds);
