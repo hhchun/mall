@@ -2,6 +2,7 @@ package com.hhchun.mall.user.platform.provider.cache;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.hhchun.mall.common.base.Preconditions;
 import com.hhchun.mall.common.exception.UnknownErrorException;
 import com.hhchun.mall.user.support.provider.Permission;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +43,8 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
     // 操作公开权限数据时防止缓存击穿使用的锁
     private static final Lock REDIS_OVERT_PERMISSION_LOCK = new ReentrantLock();
 
+    private static final List<String> REDIS_LIST_VALUES_EMPTY = Lists.newArrayList("{}");
+
     // 序列化工具对象
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -55,11 +59,11 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
     @Override
     public List<Permission> getAllPermission() {
         List<String> values = listOps.range(REDIS_ALL_PERMISSION_KEY, 0, -1);
-        if (values == null) {
+        if (CollectionUtils.isEmpty(values)) {
             REDIS_ALL_PERMISSION_LOCK.lock();
             try {
                 values = listOps.range(REDIS_ALL_PERMISSION_KEY, 0, -1);
-                if (values == null) {
+                if (CollectionUtils.isEmpty(values)) {
                     // 调用父类方法获取数据
                     List<Permission> permissions = super.getAllPermission();
                     values = permissions.stream().map(p -> {
@@ -70,6 +74,9 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                             throw new UnknownErrorException(e);
                         }
                     }).collect(Collectors.toList());
+                    if (CollectionUtils.isEmpty(values)) {
+                        values = REDIS_LIST_VALUES_EMPTY;
+                    }
                     listOps.leftPushAll(REDIS_ALL_PERMISSION_KEY, values);
                     // 设置过期时间
                     long random = RandomUtils.nextLong(1, TimeUnit.HOURS.toMillis(REDIS_ALL_PERMISSION_MIN_EXPIRE));
@@ -95,11 +102,11 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
         Preconditions.checkArgument(platformUserId != null, "platformUserId == null!");
         String key = REDIS_USER_PERMISSION_KEY_PREFIX + platformUserId;
         List<String> values = listOps.range(key, 0, -1);
-        if (values == null) {
+        if (CollectionUtils.isEmpty(values)) {
             REDIS_USER_PERMISSION_LOCK.lock();
             try {
                 values = listOps.range(key, 0, -1);
-                if (values == null) {
+                if (CollectionUtils.isEmpty(values)) {
                     List<Permission> permissions = super.getOwnedPermission(platformUserId);
                     values = permissions.stream().map(p -> {
                         try {
@@ -109,6 +116,9 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                             throw new UnknownErrorException(e);
                         }
                     }).collect(Collectors.toList());
+                    if (CollectionUtils.isEmpty(values)) {
+                        values = REDIS_LIST_VALUES_EMPTY;
+                    }
                     listOps.leftPushAll(key, values);
                     // 设置过期时间
                     long random = RandomUtils.nextLong(1, TimeUnit.HOURS.toMillis(REDIS_USER_PERMISSION_MIN_EXPIRE));
@@ -132,11 +142,11 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
     @Override
     public List<Permission> getOvertPermission() {
         List<String> values = listOps.range(REDIS_OVERT_PERMISSION_KEY, 0, -1);
-        if (values == null) {
+        if (CollectionUtils.isEmpty(values)) {
             REDIS_OVERT_PERMISSION_LOCK.lock();
             try {
                 values = listOps.range(REDIS_OVERT_PERMISSION_KEY, 0, -1);
-                if (values == null) {
+                if (CollectionUtils.isEmpty(values)) {
                     List<Permission> permissions = super.getOvertPermission();
                     values = permissions.stream().map(p -> {
                         try {
@@ -146,6 +156,9 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                             throw new UnknownErrorException(e);
                         }
                     }).collect(Collectors.toList());
+                    if (CollectionUtils.isEmpty(values)) {
+                        values = REDIS_LIST_VALUES_EMPTY;
+                    }
                     listOps.leftPushAll(REDIS_OVERT_PERMISSION_KEY, values);
                     // 设置过期时间
                     long random = RandomUtils.nextLong(1, TimeUnit.HOURS.toMillis(REDIS_OVERT_PERMISSION_MIN_EXPIRE));
