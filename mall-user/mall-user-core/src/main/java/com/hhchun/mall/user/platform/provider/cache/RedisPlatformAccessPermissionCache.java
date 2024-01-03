@@ -10,7 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -43,7 +44,8 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
     // 操作公开权限数据时防止缓存击穿使用的锁
     private static final Lock REDIS_OVERT_PERMISSION_LOCK = new ReentrantLock();
 
-    private static final List<String> REDIS_LIST_VALUES_EMPTY = Lists.newArrayList("{}");
+    private static final String REDIS_LIST_EMPTY_VALUE = "{}";
+    private static final List<String> REDIS_LIST_EMPTY_VALUES = Lists.newArrayList(REDIS_LIST_EMPTY_VALUE);
 
     // 序列化工具对象
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -75,7 +77,7 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                         }
                     }).collect(Collectors.toList());
                     if (CollectionUtils.isEmpty(values)) {
-                        values = REDIS_LIST_VALUES_EMPTY;
+                        values = REDIS_LIST_EMPTY_VALUES;
                     }
                     listOps.leftPushAll(REDIS_ALL_PERMISSION_KEY, values);
                     // 设置过期时间
@@ -87,14 +89,7 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                 REDIS_ALL_PERMISSION_LOCK.unlock();
             }
         }
-        return values.stream().map(value -> {
-            try {
-                return objectMapper.readValue(value, Permission.class);
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage(), e);
-                throw new UnknownErrorException(e);
-            }
-        }).collect(Collectors.toList());
+        return deserializePermissions(values);
     }
 
     @Override
@@ -117,7 +112,7 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                         }
                     }).collect(Collectors.toList());
                     if (CollectionUtils.isEmpty(values)) {
-                        values = REDIS_LIST_VALUES_EMPTY;
+                        values = REDIS_LIST_EMPTY_VALUES;
                     }
                     listOps.leftPushAll(key, values);
                     // 设置过期时间
@@ -129,14 +124,7 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                 REDIS_USER_PERMISSION_LOCK.unlock();
             }
         }
-        return values.stream().map(value -> {
-            try {
-                return objectMapper.readValue(value, Permission.class);
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage(), e);
-                throw new UnknownErrorException(e);
-            }
-        }).collect(Collectors.toList());
+        return deserializePermissions(values);
     }
 
     @Override
@@ -157,7 +145,7 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                         }
                     }).collect(Collectors.toList());
                     if (CollectionUtils.isEmpty(values)) {
-                        values = REDIS_LIST_VALUES_EMPTY;
+                        values = REDIS_LIST_EMPTY_VALUES;
                     }
                     listOps.leftPushAll(REDIS_OVERT_PERMISSION_KEY, values);
                     // 设置过期时间
@@ -169,14 +157,7 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
                 REDIS_OVERT_PERMISSION_LOCK.unlock();
             }
         }
-        return values.stream().map(value -> {
-            try {
-                return objectMapper.readValue(value, Permission.class);
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage(), e);
-                throw new UnknownErrorException(e);
-            }
-        }).collect(Collectors.toList());
+        return deserializePermissions(values);
     }
 
     @Override
@@ -201,4 +182,21 @@ public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPer
             listOps = redisTemplate.opsForList();
         }
     }
+
+    private List<Permission> deserializePermissions(List<String> values) {
+        if (CollectionUtils.isEmpty(values)) {
+            return Lists.newArrayList();
+        }
+        return values.stream()
+                .filter(value -> !REDIS_LIST_EMPTY_VALUE.equals(value))
+                .map(value -> {
+                    try {
+                        return objectMapper.readValue(value, Permission.TYPE_REFERENCE);
+                    } catch (JsonProcessingException e) {
+                        log.error(e.getMessage(), e);
+                        throw new UnknownErrorException(e);
+                    }
+                }).collect(Collectors.toList());
+    }
+
 }

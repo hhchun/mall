@@ -1,25 +1,35 @@
 package com.hhchun.mall.user.support.provider;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class Permission {
     /**
+     * 序列化类型
+     */
+    public static final TypeReference<Permission> TYPE_REFERENCE = new TypeReference<Permission>() {
+    };
+
+    /**
      * 权限标识
      */
-    private final String symbol;
+    private String symbol;
     /**
      * 额外信息
      */
-    private final Extra extra;
+    private Extra extra;
+
+    public Permission() {
+    }
 
     public Permission(String symbol) {
         this.symbol = symbol;
-        this.extra = null;
     }
 
     public Permission(String symbol, Extra extra) {
-        this.symbol = symbol;
+        this(symbol);
         this.extra = extra;
     }
 
@@ -45,24 +55,35 @@ public class Permission {
         return extra;
     }
 
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public void setExtra(Extra extra) {
+        this.extra = extra;
+    }
+
     public static class Extra {
         /**
          * 权限id
          */
-        private final Long permissionId;
+        private Long permissionId;
         /**
          * 权限主体
          */
-        private final String subject;
+        private String subject;
+
+        public Extra() {
+
+        }
 
         public Extra(String subject) {
             this.subject = subject;
-            this.permissionId = null;
         }
 
-        public Extra(Long permissionId, String subject) {
+        public Extra(String subject, Long permissionId) {
+            this(subject);
             this.permissionId = permissionId;
-            this.subject = subject;
         }
 
         @Nullable
@@ -72,6 +93,14 @@ public class Permission {
 
         public String getSubject() {
             return subject;
+        }
+
+        public void setPermissionId(Long permissionId) {
+            this.permissionId = permissionId;
+        }
+
+        public void setSubject(String subject) {
+            this.subject = subject;
         }
     }
 }

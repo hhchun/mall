@@ -39,7 +39,7 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
         LambdaQueryWrapper<PlatformPermissionEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.select(PlatformPermissionEntity::getSymbol, PlatformPermissionEntity::getSubject);
         return platformPermissionService.list(wrapper).stream()
-                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
+                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getSubject(),p.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +67,7 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
                 .select(PlatformPermissionEntity::getSymbol)
                 .in(PlatformPermissionEntity::getId, permissionIds);
         return platformPermissionService.list(wrapper).stream()
-                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
+                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getSubject(),p.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -88,7 +88,7 @@ public class DefaultPlatformAccessPermissionCache implements PlatformAccessPermi
                 .eq(PlatformPermissionEntity::getOvert, PlatformPermissionConstant.PERMISSION_OVERT_YES)
                 .or().in(!CollectionUtils.isEmpty(permissionIds), PlatformPermissionEntity::getId, permissionIds);
         return platformPermissionService.list(wrapper).stream()
-                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getId(), p.getSubject())))
+                .map(p -> new Permission(p.getSymbol(), new Permission.Extra(p.getSubject(),p.getId())))
                 .collect(Collectors.toList());
     }
 
