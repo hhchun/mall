@@ -28,7 +28,7 @@ public class MallAccessPlatformConfiguration {
     }
 
     @Bean
-    public FilterRegistrationBean<Filter> daemonAuthorizeFilterRegistration() {
+    public FilterRegistrationBean<Filter> platformAuthorizeFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
         Filter platformAuthorizeFilter = new PlatformAuthorizeFilter();
         registration.setFilter(platformAuthorizeFilter);
