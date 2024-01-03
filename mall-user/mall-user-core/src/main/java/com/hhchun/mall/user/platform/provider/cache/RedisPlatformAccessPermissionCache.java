@@ -23,21 +23,21 @@ import java.util.stream.Collectors;
 public class RedisPlatformAccessPermissionCache extends DefaultPlatformAccessPermissionCache implements InitializingBean {
 
     // 所有权限数据在redis中的key
-    private static final String REDIS_ALL_PERMISSION_KEY = "access:platform:permission:all";
+    private static final String REDIS_ALL_PERMISSION_KEY = "user:platform:permission:all";
     // 所有权限数据在redis中过期时间的最小基础值,单位为毫秒
     private static final Long REDIS_ALL_PERMISSION_MIN_EXPIRE = TimeUnit.HOURS.toMillis(12);
     // 操作所有权限数据时防止缓存击穿使用的锁
     private static final Lock REDIS_ALL_PERMISSION_LOCK = new ReentrantLock();
 
     // 用户权限数据在redis中的key前缀
-    private static final String REDIS_USER_PERMISSION_KEY_PREFIX = "access:platform:permission:";
+    private static final String REDIS_USER_PERMISSION_KEY_PREFIX = "user:platform:permission:";
     // 用户权限数据在redis中过期时间的最小基础值,单位为毫秒
     private static final Long REDIS_USER_PERMISSION_MIN_EXPIRE = TimeUnit.HOURS.toMillis(3);
     // 操作所有权限数据时防止缓存击穿使用的锁
     private static final Lock REDIS_USER_PERMISSION_LOCK = new ReentrantLock();
 
     // 公开权限数据在redis中的key
-    private static final String REDIS_OVERT_PERMISSION_KEY = "access:platform:permission:overt";
+    private static final String REDIS_OVERT_PERMISSION_KEY = "user:platform:permission:overt";
     // 公开权限数据在redis中过期时间的最小基础值,单位为毫秒
     private static final Long REDIS_OVERT_PERMISSION_MIN_EXPIRE = TimeUnit.HOURS.toMillis(12);
     // 操作公开权限数据时防止缓存击穿使用的锁

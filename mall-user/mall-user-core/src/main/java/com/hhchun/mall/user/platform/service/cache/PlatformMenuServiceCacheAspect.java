@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Aspect
 public class PlatformMenuServiceCacheAspect {
 
-    private static final String REDIS_USER_MENU_KEY_PREFIX = "access:platform:user:menu:";
+    private static final String REDIS_USER_MENU_KEY_PREFIX = "user:platform:user:menu:";
     private static final Long REDIS_USER_MENU_MIN_EXPIRE = TimeUnit.HOURS.toMillis(12);
     private static final List<String> REDIS_USER_MENU_EMPTY = Lists.newArrayList("{}");
 
