@@ -17,7 +17,7 @@ import lombok.Data;
  * @date 2023-12-01 23:20:10
  */
 @Data
-@TableName("ac_platform_role_permission")
+@TableName("user_platform_role_permission")
 public class PlatformRolePermissionEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

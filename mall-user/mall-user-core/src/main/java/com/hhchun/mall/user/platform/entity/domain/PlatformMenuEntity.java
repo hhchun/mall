@@ -2,10 +2,10 @@ package com.hhchun.mall.user.platform.entity.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
  * 平台菜单
@@ -15,7 +15,7 @@ import lombok.Data;
  * @date 2023-12-08 22:58:31
  */
 @Data
-@TableName("ac_platform_menu")
+@TableName("user_platform_menu")
 public class PlatformMenuEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
