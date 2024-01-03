@@ -22,7 +22,7 @@ import com.hhchun.mall.common.utils.R;
  * @date 2023-12-01 23:20:10
  */
 @RestController
-@RequestMapping("/access/platform/user-role")
+@RequestMapping("/user/platform/user-role")
 public class PlatformUserRoleController {
     @Autowired
     private PlatformUserRoleService platformUserRoleService;

@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2023-12-08 22:58:31
  */
 @RestController
-@RequestMapping("/access/platform/menu")
+@RequestMapping("/user/platform/menu")
 public class PlatformMenuController {
     @Autowired
     private PlatformMenuService platformMenuService;

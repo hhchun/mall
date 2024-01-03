@@ -21,7 +21,7 @@ import com.hhchun.mall.common.utils.R;
  * @date 2023-12-01 23:20:10
  */
 @RestController
-@RequestMapping("/access/permission/role-permission")
+@RequestMapping("/user/permission/role-permission")
 public class PlatformRolePermissionController {
     @Autowired
     private PlatformRolePermissionService platformRolePermissionService;

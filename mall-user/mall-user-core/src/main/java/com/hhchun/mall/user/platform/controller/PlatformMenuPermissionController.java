@@ -22,7 +22,7 @@ import com.hhchun.mall.common.utils.R;
  * @date 2023-12-09 03:22:30
  */
 @RestController
-@RequestMapping("/access/platform/menu-permission")
+@RequestMapping("/user/platform/menu-permission")
 public class PlatformMenuPermissionController {
     @Autowired
     private PlatformMenuPermissionService platformMenuPermissionService;
