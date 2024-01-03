@@ -18,7 +18,7 @@ public class AccessControlExceptionControllerAdvice {
     @ExceptionHandler(value = AccessDeniedException.class)
     public R<?> accessDeniedExceptionHandler(AccessDeniedException e) {
         log.info(e.getMessage());
-        return R.error(ResultCodeConstant.ACCESS_DENIED.getCode(), e.getMessage());
+        return R.error(ResultCodeConstant.ACCESS_DENIED.getCode(), ResultCodeConstant.ACCESS_DENIED.getMessage());
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
