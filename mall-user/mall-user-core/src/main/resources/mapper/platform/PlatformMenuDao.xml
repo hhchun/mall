@@ -15,7 +15,7 @@
         <result property="overt" column="overt"/>
     </resultMap>
     <update id="replaceRoute">
-        UPDATE ac_platform_menu
+        UPDATE user_platform_menu
         SET route = REPLACE(route, #{o}, #{o})
         WHERE route LIKE CONCAT(#{o}, '*');
     </update>

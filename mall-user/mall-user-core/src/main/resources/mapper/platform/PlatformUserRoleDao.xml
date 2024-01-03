@@ -19,8 +19,8 @@
         r.name,
         r.des,
         IF(ur.id IS NOT NULL, 1, 0) AS owned
-        FROM ac_platform_role AS r
-        LEFT JOIN ac_platform_user_role AS ur ON ur.user_id = #{search.userId} AND r.id = ur.role_id
+        FROM user_platform_role AS r
+        LEFT JOIN user_platform_user_role AS ur ON ur.user_id = #{search.userId} AND r.id = ur.role_id
         <where>
             <if test="search.owned != null AND search.owned == 1">
                 AND ur.user_id = #{search.userId}
@@ -30,7 +30,7 @@
     </select>
     <select id="getPlatformRemovedUserIdsByRoleIds" resultType="java.lang.Long">
         SELECT *
-        FROM ac_platform_user_role
+        FROM user_platform_user_role
         WHERE role_id IN
         <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
             #{roleId}

@@ -21,8 +21,8 @@
         m.pid,
         m.overt,
         IF(rm.id IS NOT NULL, 1, 0) AS owned
-        FROM ac_platform_menu AS m
-        LEFT JOIN ac_platform_role_menu AS rm ON rm.role_id = #{search.roleId} AND m.id = rm.role_id
+        FROM user_platform_menu AS m
+        LEFT JOIN user_platform_role_menu AS rm ON rm.role_id = #{search.roleId} AND m.id = rm.role_id
         WHERE m.del = 0 AND m.pid = #{search.menuPid}
         <if test="search.owned != null AND search.owned == 1">
             AND rm.role_id = #{search.roleId}
@@ -31,7 +31,7 @@
     </select>
     <select id="getPlatformRemovedRoleIdsByMenuIds" resultType="java.lang.Long">
         SELECT role_id
-        FROM ac_platform_role_menu
+        FROM user_platform_role_menu
         WHERE menu_id IN
         <foreach collection="menuIds" separator="," item="menuId" open="(" close=")">
             #{menuId}

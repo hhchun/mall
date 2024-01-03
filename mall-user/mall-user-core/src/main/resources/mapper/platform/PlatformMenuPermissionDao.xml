@@ -22,8 +22,8 @@
         p.subject,
         p.overt,
         IF(mp.id IS NOT NULL, 1, 0) AS owned
-        FROM ac_platform_permission AS p
-        LEFT JOIN ac_platform_menu_permission AS mp ON mp.menu_id = #{search.menuId} AND p.id = mp.permission_id
+        FROM user_platform_permission AS p
+        LEFT JOIN user_platform_menu_permission AS mp ON mp.menu_id = #{search.menuId} AND p.id = mp.permission_id
         <where>
             <if test="search.owned != null AND search.owned == 1">
                 AND mp.menu_id = #{search.menuId}

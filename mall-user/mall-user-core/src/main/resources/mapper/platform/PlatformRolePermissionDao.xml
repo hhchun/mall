@@ -23,8 +23,8 @@
         p.subject,
         p.overt,
         IF(rp.id IS NOT NULL, 1, 0) AS owned
-        FROM ac_platform_permission AS p
-        LEFT JOIN ac_platform_role_permission AS rp
+        FROM user_platform_permission AS p
+        LEFT JOIN user_platform_role_permission AS rp
         ON rp.role_id = #{search.roleId} AND p.id = rp.permission_id
         <where>
             <if test="search.owned != null AND search.owned == 1">
@@ -36,7 +36,7 @@
 
     <select id="getPlatformRemovedRoleIdsByPermissionId" resultType="java.lang.Long">
         SELECT role_id
-        FROM ac_platform_role_permission
+        FROM user_platform_role_permission
         WHERE permission_id = #{permissionId}
     </select>
 
