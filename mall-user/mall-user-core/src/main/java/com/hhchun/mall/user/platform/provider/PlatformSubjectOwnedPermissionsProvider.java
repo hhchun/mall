@@ -1,5 +1,7 @@
 package com.hhchun.mall.user.platform.provider;
 
+import com.hhchun.mall.user.fingerprint.Fingerprint;
+import com.hhchun.mall.user.fingerprint.FingerprintHolder;
 import com.hhchun.mall.user.platform.authorize.PlatformUserSubjectHolder;
 import com.hhchun.mall.user.platform.provider.cache.PlatformAccessPermissionCache;
 import com.hhchun.mall.access.support.provider.Permission;
@@ -17,6 +19,15 @@ public class PlatformSubjectOwnedPermissionsProvider implements SubjectOwnedPerm
 
     public PlatformSubjectOwnedPermissionsProvider(PlatformAccessPermissionCache cache) {
         this.cache = cache;
+    }
+
+    @Override
+    public boolean support() {
+        Fingerprint fingerprint = FingerprintHolder.getFingerprint();
+        if (fingerprint != null) {
+            return Fingerprint.CLIENT_TYPE_PLATFORM.equals(fingerprint.getClientType());
+        }
+        return true;
     }
 
     @Override
