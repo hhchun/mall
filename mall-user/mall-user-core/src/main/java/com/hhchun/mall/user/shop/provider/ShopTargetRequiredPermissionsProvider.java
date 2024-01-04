@@ -1,6 +1,8 @@
 package com.hhchun.mall.user.shop.provider;
 
 import com.hhchun.mall.common.base.Preconditions;
+import com.hhchun.mall.user.fingerprint.Fingerprint;
+import com.hhchun.mall.user.fingerprint.FingerprintHolder;
 import com.hhchun.mall.user.shop.provider.cache.ShopAccessPermissionCache;
 import com.hhchun.mall.access.support.provider.Permission;
 import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
@@ -21,6 +23,15 @@ public class ShopTargetRequiredPermissionsProvider implements TargetRequiredPerm
 
     public ShopTargetRequiredPermissionsProvider(ShopAccessPermissionCache cache) {
         this.cache = cache;
+    }
+
+    @Override
+    public boolean support() {
+        Fingerprint fingerprint = FingerprintHolder.getFingerprint();
+        if (fingerprint != null) {
+            return Fingerprint.CLIENT_TYPE_SHOP.equals(fingerprint.getClientType());
+        }
+        return true;
     }
 
     @Override

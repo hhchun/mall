@@ -1,5 +1,7 @@
 package com.hhchun.mall.user.shop.provider;
 
+import com.hhchun.mall.user.fingerprint.Fingerprint;
+import com.hhchun.mall.user.fingerprint.FingerprintHolder;
 import com.hhchun.mall.user.shop.authorize.ShopUserSubjectHolder;
 import com.hhchun.mall.user.shop.provider.cache.ShopAccessPermissionCache;
 import com.hhchun.mall.access.support.provider.Permission;
@@ -17,6 +19,15 @@ public class ShopSubjectOwnedPermissionsProvider implements SubjectOwnedPermissi
 
     public ShopSubjectOwnedPermissionsProvider(ShopAccessPermissionCache cache) {
         this.cache = cache;
+    }
+
+    @Override
+    public boolean support() {
+        Fingerprint fingerprint = FingerprintHolder.getFingerprint();
+        if (fingerprint != null) {
+            return Fingerprint.CLIENT_TYPE_SHOP.equals(fingerprint.getClientType());
+        }
+        return true;
     }
 
     @Override
