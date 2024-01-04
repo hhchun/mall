@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.hhchun.mall.user.fingerprint.FingerprintCollectionFilter;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.time.LocalDateTime;
 
 @Configuration
@@ -38,5 +41,18 @@ public class MallUserCoreConfiguration {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean(FingerprintCollectionFilter.class)
+    public FilterRegistrationBean<Filter> fingerprintCollectionFilterRegistrationBean() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
+        Filter filter = new FingerprintCollectionFilter();
+        registration.setFilter(filter);
+        registration.addUrlPatterns("/*");
+        registration.setName(FingerprintCollectionFilter.class.getName() + "RegistrationBean");
+        registration.setOrder(FingerprintCollectionFilter.FILTER_REGISTRATION_ORDER);
+        return registration;
     }
 }
