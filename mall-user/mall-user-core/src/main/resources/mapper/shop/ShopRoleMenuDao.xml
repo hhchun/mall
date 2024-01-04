@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhchun.mall.user.shop.dao.ShopRoleMenuDao">
+
+    <resultMap type="com.hhchun.mall.user.shop.entity.domain.ShopRoleMenuEntity" id="shopRoleMenuMap">
+        <result property="id" column="id"/>
+        <result property="del" column="del"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="roleId" column="role_id"/>
+        <result property="menuId" column="menu_id"/>
+    </resultMap>
+    <select id="getShopMenuTree" resultType="com.hhchun.mall.user.shop.entity.bo.ShopMenuBo">
+        SELECT m.id,
+        m.create_time,
+        m.update_time,
+        m.symbol,
+        m.name,
+        m.des,
+        m.pid,
+        m.overt,
+        IF(rm.id IS NOT NULL, 1, 0) AS owned
+        FROM user_shop_menu AS m
+        LEFT JOIN user_shop_role_menu AS rm ON rm.role_id = #{search.roleId} AND m.id = rm.role_id
+        WHERE m.del = 0 AND m.pid = #{search.menuPid}
+        <if test="search.owned != null AND search.owned == 1">
+            AND rm.role_id = #{search.roleId}
+        </if>
+        ORDER BY rm.id DESC;
+    </select>
+    <select id="getShopRemovedRoleIdsByMenuIds" resultType="java.lang.Long">
+        SELECT role_id
+        FROM user_shop_role_menu
+        WHERE menu_id IN
+        <foreach collection="menuIds" separator="," item="menuId" open="(" close=")">
+            #{menuId}
+        </foreach>
+    </select>
+
+
+</mapper>

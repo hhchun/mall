@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhchun.mall.user.shop.dao.ShopMenuPermissionDao">
+
+    <resultMap type="com.hhchun.mall.user.shop.entity.domain.ShopMenuPermissionEntity" id="shopMenuPermissionMap">
+        <result property="id" column="id"/>
+        <result property="del" column="del"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="menuId" column="menu_id"/>
+        <result property="permissionId" column="permission_id"/>
+    </resultMap>
+    <select id="getShopPermissions"
+            resultType="com.hhchun.mall.user.shop.entity.bo.ShopPermissionBo">
+        SELECT p.id,
+        p.create_time,
+        p.update_time,
+        p.symbol,
+        p.name,
+        p.des,
+        p.subject,
+        p.overt,
+        IF(mp.id IS NOT NULL, 1, 0) AS owned
+        FROM user_shop_permission AS p
+        LEFT JOIN user_shop_menu_permission AS mp ON mp.menu_id = #{search.menuId} AND p.id = mp.permission_id
+        <where>
+            <if test="search.owned != null AND search.owned == 1">
+                AND mp.menu_id = #{search.menuId}
+            </if>
+        </where>
+        ORDER BY mp.id DESC
+    </select>
+
+
+</mapper>
