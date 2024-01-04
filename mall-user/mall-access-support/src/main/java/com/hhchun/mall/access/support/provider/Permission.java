@@ -1,4 +1,4 @@
-package com.hhchun.mall.user.support.provider;
+package com.hhchun.mall.access.support.provider;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 

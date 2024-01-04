@@ -1,9 +1,9 @@
-package com.hhchun.mall.user.support.decision;
+package com.hhchun.mall.access.support.decision;
 
 import com.google.common.collect.Lists;
-import com.hhchun.mall.user.support.provider.Permission;
-import com.hhchun.mall.user.support.provider.SubjectOwnedPermissionsProvider;
-import com.hhchun.mall.user.support.provider.TargetRequiredPermissionsProvider;
+import com.hhchun.mall.access.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
 
 import java.util.List;
 import java.util.Optional;

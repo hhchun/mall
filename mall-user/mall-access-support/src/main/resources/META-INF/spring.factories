@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.hhchun.mall.user.support.config.AccessControlWebConfiguration
+com.hhchun.mall.access.support.config.AccessControlWebConfiguration

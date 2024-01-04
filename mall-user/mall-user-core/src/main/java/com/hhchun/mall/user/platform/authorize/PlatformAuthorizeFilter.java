@@ -1,6 +1,6 @@
 package com.hhchun.mall.user.platform.authorize;
 import com.hhchun.mall.common.utils.TokenUtils;
-import com.hhchun.mall.user.support.filter.AccessControlFilter;
+import com.hhchun.mall.access.support.filter.AccessControlFilter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;

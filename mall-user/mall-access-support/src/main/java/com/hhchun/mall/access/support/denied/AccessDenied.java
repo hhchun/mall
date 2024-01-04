@@ -1,4 +1,4 @@
-package com.hhchun.mall.user.support.denied;
+package com.hhchun.mall.access.support.denied;
 
 /**
  * 访问拒绝器

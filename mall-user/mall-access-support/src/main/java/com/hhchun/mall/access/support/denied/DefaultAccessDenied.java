@@ -1,6 +1,6 @@
-package com.hhchun.mall.user.support.denied;
+package com.hhchun.mall.access.support.denied;
 
-import com.hhchun.mall.user.support.exception.AccessDeniedException;
+import com.hhchun.mall.access.support.exception.AccessDeniedException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerExceptionResolver;

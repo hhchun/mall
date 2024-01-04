@@ -35,7 +35,7 @@ public class ShopMenuPermissionEvent extends ApplicationEvent {
         return lowerRoute;
     }
 
-    public List<Long> getLowerMenuIds() {
+    public List<Long>   getLowerMenuIds() {
         return lowerMenuIds;
     }
 }

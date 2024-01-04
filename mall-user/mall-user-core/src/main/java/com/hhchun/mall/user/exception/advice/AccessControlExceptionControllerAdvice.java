@@ -3,7 +3,7 @@ package com.hhchun.mall.user.exception.advice;
 
 import com.hhchun.mall.user.common.constant.ResultCodeConstant;
 import com.hhchun.mall.user.exception.AuthenticationException;
-import com.hhchun.mall.user.support.exception.AccessDeniedException;
+import com.hhchun.mall.access.support.exception.AccessDeniedException;
 import com.hhchun.mall.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;

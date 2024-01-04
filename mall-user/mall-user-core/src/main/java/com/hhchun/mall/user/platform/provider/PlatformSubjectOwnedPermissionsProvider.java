@@ -2,8 +2,8 @@ package com.hhchun.mall.user.platform.provider;
 
 import com.hhchun.mall.user.platform.authorize.PlatformUserSubjectHolder;
 import com.hhchun.mall.user.platform.provider.cache.PlatformAccessPermissionCache;
-import com.hhchun.mall.user.support.provider.Permission;
-import com.hhchun.mall.user.support.provider.SubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

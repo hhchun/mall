@@ -1,8 +1,8 @@
-package com.hhchun.mall.user.support.filter;
+package com.hhchun.mall.access.support.filter;
 
 import com.google.common.base.Preconditions;
-import com.hhchun.mall.user.support.decision.AccessDecision;
-import com.hhchun.mall.user.support.denied.AccessDenied;
+import com.hhchun.mall.access.support.decision.AccessDecision;
+import com.hhchun.mall.access.support.denied.AccessDenied;
 
 import javax.servlet.*;
 import java.io.IOException;

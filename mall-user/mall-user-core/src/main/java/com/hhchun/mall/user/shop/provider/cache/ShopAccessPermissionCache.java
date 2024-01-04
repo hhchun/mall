@@ -1,6 +1,6 @@
 package com.hhchun.mall.user.shop.provider.cache;
 
-import com.hhchun.mall.user.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.Permission;
 
 import java.util.List;
 

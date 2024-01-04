@@ -9,7 +9,7 @@ import com.hhchun.mall.user.shop.constant.ShopPermissionConstant;
 import com.hhchun.mall.user.shop.entity.domain.ShopMenuEntity;
 import com.hhchun.mall.user.shop.entity.domain.ShopPermissionEntity;
 import com.hhchun.mall.user.shop.service.*;
-import com.hhchun.mall.user.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 

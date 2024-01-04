@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.hhchun.mall.common.base.Preconditions;
 import com.hhchun.mall.common.exception.UnknownErrorException;
-import com.hhchun.mall.user.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.InitializingBean;

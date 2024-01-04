@@ -1,4 +1,4 @@
-package com.hhchun.mall.user.support.exception;
+package com.hhchun.mall.access.support.exception;
 
 /**
  * 访问被拒绝异常

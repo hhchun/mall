@@ -2,8 +2,8 @@ package com.hhchun.mall.user.shop.provider;
 
 import com.hhchun.mall.common.base.Preconditions;
 import com.hhchun.mall.user.shop.provider.cache.ShopAccessPermissionCache;
-import com.hhchun.mall.user.support.provider.Permission;
-import com.hhchun.mall.user.support.provider.TargetRequiredPermissionsProvider;
+import com.hhchun.mall.access.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;

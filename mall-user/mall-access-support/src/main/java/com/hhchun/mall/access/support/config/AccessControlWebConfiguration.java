@@ -1,15 +1,15 @@
-package com.hhchun.mall.user.support.config;
+package com.hhchun.mall.access.support.config;
 
 
-import com.hhchun.mall.user.support.decision.AccessDecision;
-import com.hhchun.mall.user.support.decision.AffirmativeAccessDecision;
-import com.hhchun.mall.user.support.denied.AccessDenied;
-import com.hhchun.mall.user.support.denied.DefaultAccessDenied;
-import com.hhchun.mall.user.support.filter.AccessControlFilter;
-import com.hhchun.mall.user.support.provider.DelegatingSubjectOwnedPermissionsProvider;
-import com.hhchun.mall.user.support.provider.DelegatingTargetAccessiblePermissionsProvider;
-import com.hhchun.mall.user.support.provider.SubjectOwnedPermissionsProvider;
-import com.hhchun.mall.user.support.provider.TargetRequiredPermissionsProvider;
+import com.hhchun.mall.access.support.decision.AccessDecision;
+import com.hhchun.mall.access.support.decision.AffirmativeAccessDecision;
+import com.hhchun.mall.access.support.denied.AccessDenied;
+import com.hhchun.mall.access.support.denied.DefaultAccessDenied;
+import com.hhchun.mall.access.support.filter.AccessControlFilter;
+import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.provider.DelegatingSubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.provider.DelegatingTargetAccessiblePermissionsProvider;
+import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;

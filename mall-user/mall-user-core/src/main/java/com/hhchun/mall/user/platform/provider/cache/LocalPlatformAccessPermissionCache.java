@@ -4,7 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.hhchun.mall.common.base.Preconditions;
 import com.hhchun.mall.common.exception.UnknownErrorException;
-import com.hhchun.mall.user.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

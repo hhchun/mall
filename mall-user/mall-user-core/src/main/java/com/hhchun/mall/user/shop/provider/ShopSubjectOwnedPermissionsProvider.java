@@ -2,8 +2,8 @@ package com.hhchun.mall.user.shop.provider;
 
 import com.hhchun.mall.user.shop.authorize.ShopUserSubjectHolder;
 import com.hhchun.mall.user.shop.provider.cache.ShopAccessPermissionCache;
-import com.hhchun.mall.user.support.provider.Permission;
-import com.hhchun.mall.user.support.provider.SubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

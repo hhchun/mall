@@ -8,7 +8,7 @@ import com.hhchun.mall.user.platform.constant.PlatformMenuConstant;
 import com.hhchun.mall.user.platform.constant.PlatformPermissionConstant;
 import com.hhchun.mall.user.platform.entity.domain.*;
 import com.hhchun.mall.user.platform.service.*;
-import com.hhchun.mall.user.support.provider.Permission;
+import com.hhchun.mall.access.support.provider.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
