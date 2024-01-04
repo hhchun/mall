@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * 权限控制过滤器
  */
-public class AccessControlFilter implements Filter {
+public class AccessSupportFilter implements Filter {
     /**
      * 注册顺序
      */
@@ -24,7 +24,7 @@ public class AccessControlFilter implements Filter {
      */
     private final AccessDenied accessDenied;
 
-    public AccessControlFilter(final AccessDecision accessDecision, final AccessDenied accessDenied) {
+    public AccessSupportFilter(final AccessDecision accessDecision, final AccessDenied accessDenied) {
         Preconditions.checkArgument(accessDecision != null, "accessDecision == null!");
         Preconditions.checkArgument(accessDenied != null, "accessDenied == null!");
         this.accessDecision = accessDecision;

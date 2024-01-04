@@ -5,10 +5,10 @@ import com.hhchun.mall.access.support.decision.AccessDecision;
 import com.hhchun.mall.access.support.decision.AffirmativeAccessDecision;
 import com.hhchun.mall.access.support.denied.AccessDenied;
 import com.hhchun.mall.access.support.denied.DefaultAccessDenied;
-import com.hhchun.mall.access.support.filter.AccessControlFilter;
-import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
+import com.hhchun.mall.access.support.filter.AccessSupportFilter;
 import com.hhchun.mall.access.support.provider.DelegatingSubjectOwnedPermissionsProvider;
 import com.hhchun.mall.access.support.provider.DelegatingTargetAccessiblePermissionsProvider;
+import com.hhchun.mall.access.support.provider.SubjectOwnedPermissionsProvider;
 import com.hhchun.mall.access.support.provider.TargetRequiredPermissionsProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -34,16 +34,16 @@ import java.util.Set;
 )
 @ConditionalOnClass(DispatcherServlet.class)
 @AutoConfigureAfter({DispatcherServletAutoConfiguration.class})
-public class AccessControlWebConfiguration {
+public class AccessSupportWebConfiguration {
 
     @Bean
-    public FilterRegistrationBean<Filter> accessControlFilterRegistration(AccessDecision accessDecision, AccessDenied accessDenied) {
+    public FilterRegistrationBean<Filter> accessSupportFilterRegistration(AccessDecision accessDecision, AccessDenied accessDenied) {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
-        AccessControlFilter accessControlFilter = new AccessControlFilter(accessDecision, accessDenied);
-        registration.setFilter(accessControlFilter);
+        AccessSupportFilter accessSupportFilter = new AccessSupportFilter(accessDecision, accessDenied);
+        registration.setFilter(accessSupportFilter);
         registration.addUrlPatterns("/*");
-        registration.setName(AccessControlFilter.class.getName() + "RegistrationBean");
-        registration.setOrder(AccessControlFilter.FILTER_REGISTRATION_ORDER);
+        registration.setName(AccessSupportFilter.class.getName() + "RegistrationBean");
+        registration.setOrder(AccessSupportFilter.FILTER_REGISTRATION_ORDER);
         return registration;
     }
 
