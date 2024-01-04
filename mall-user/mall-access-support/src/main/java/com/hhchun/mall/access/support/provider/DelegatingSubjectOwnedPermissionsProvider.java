@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DelegatingSubjectOwnedPermissionsProvider implements SubjectOwnedPermissionsProvider {
-    public static final String BEAN_NAME = "com.hhchun.mall.access.support.provider.DelegatingSubjectOwnedPermissionsProvider";
+    public static final String BEAN_NAME = "delegatingSubjectOwnedPermissionsProvider";
 
     private final Set<SubjectOwnedPermissionsProvider> sops;
 
@@ -20,8 +20,14 @@ public class DelegatingSubjectOwnedPermissionsProvider implements SubjectOwnedPe
     }
 
     @Override
+    public boolean support() {
+        return true;
+    }
+
+    @Override
     public List<Permission> provide() {
-        return sops.stream().flatMap(sop -> Optional.ofNullable(sop.provide()).orElse(Lists.newArrayList())
-                .stream()).collect(Collectors.toList());
+        return sops.stream().filter(SubjectOwnedPermissionsProvider::support)
+                .flatMap(sop -> Optional.ofNullable(sop.provide()).orElse(Lists.newArrayList()).stream())
+                .collect(Collectors.toList());
     }
 }

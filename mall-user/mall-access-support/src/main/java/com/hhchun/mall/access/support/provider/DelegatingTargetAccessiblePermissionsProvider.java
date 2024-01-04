@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DelegatingTargetAccessiblePermissionsProvider implements TargetRequiredPermissionsProvider {
-    public static final String BEAN_NAME = "com.hhchun.mall.access.support.provider.DelegatingTargetAccessiblePermissionsProvider";
+    public static final String BEAN_NAME = "delegatingTargetAccessiblePermissionsProvider";
 
     private final Set<TargetRequiredPermissionsProvider> trs;
 
@@ -20,8 +20,15 @@ public class DelegatingTargetAccessiblePermissionsProvider implements TargetRequ
     }
 
     @Override
+    public boolean support() {
+        return true;
+    }
+
+    @Override
     public List<Permission> provide() {
-        return trs.stream().flatMap(trs -> Optional.ofNullable(trs.provide()).orElse(Lists.newArrayList())
-                .stream()).collect(Collectors.toList());
+        return trs.stream()
+                .filter(TargetRequiredPermissionsProvider::support)
+                .flatMap(trs -> Optional.ofNullable(trs.provide()).orElse(Lists.newArrayList()).stream())
+                .collect(Collectors.toList());
     }
 }
